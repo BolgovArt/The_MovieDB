@@ -1,39 +1,38 @@
 name: vk
 description: "A new Flutter project."
 
-publish_to: 'none' 
-
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.4.0-190.0.dev <4.0.0'
 
-
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
   flutter_svg: ^2.0.10+1
+  easy_localization: ^3.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
 
-
 flutter:
   assets:
     - assets/images/
   uses-material-design: true
 
-
-assets:
+assets: 
   -assets/images/
+  -assets/translate/
 
 fonts:
   - family: VK_sans
-  - asset:  -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Bold.ttf
-  - asset:  -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-DemiBold.ttf
-  - asset:  -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Medium.ttf
-  - asset:  -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Regular.ttf
+  - asset: -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Bold.ttf
+  - asset: -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-DemiBold.ttf
+  - asset: -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Medium.ttf
+  - asset: -assets/fonts/VK-Sans-Display-font-main/VKSansDisplay-Regular.ttf
+

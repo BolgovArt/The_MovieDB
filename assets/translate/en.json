@@ -1,0 +1,17 @@
+{
+    "app_title": "Login to your account",
+    "registration": "Registration",
+    "registration_title": "To use TMDB's editing and ranking features, and receive personalized recommendations, you must be logged in to your account. If you don't have an account, registering is free and easy.",
+    "registration_title_2": " If you registered but did not receive a confirmation email",
+    "registration_title_link": " click here ",
+    "registration_title_3": "to resend the letter.",
+    "login": "Login",
+    "password": "Password",
+    "save_enter": "Save login and password",
+    "log_in": "Log in",
+    "language": "English",
+    "theme": "Theme",
+    "error_login_or_password": "Incorrect login or password",
+    "error_empty_fields": "Fields are empty"
+
+}

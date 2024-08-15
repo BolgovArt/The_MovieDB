@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:vk/design/colors.dart';
 import 'package:vk/design/images.dart';
 import 'package:vk/design/style.dart';
-// import 'package:vk/widgets/main_screen/main_screen_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:vk/generated/locale_keys.g.dart';
+import 'package:vk/widgets/authorization/authorization_model.dart';
 
 class AuthorizationWidget extends StatefulWidget {
   const AuthorizationWidget({super.key});
@@ -16,12 +18,8 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
   final decoratedContainer = BoxDecoration(
       color: Colors.white, borderRadius: BorderRadius.circular(30));
 
-  // final Text textTest1 = Text('fsdf', style: StyleApp.mainSystemTextBlue); ?????????
-
-
   @override
   Widget build(BuildContext context) {
-//  final Text textTest2 = Text('fsdf', style: StyleApp.mainSystemTextBlue);  ?????????
 
     return Scaffold(
         appBar: PreferredSize(
@@ -32,9 +30,9 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  vkLogo,
+                  logoTheMVDB,
                   const SizedBox(height: 10),
-                  Text('Вход ВКонтакте', style: StyleApp.titleStyle),
+                  Text(LocaleKeys.app_title.tr(), style: StyleApp.titleStyle),
                 ],
               ),
             ),
@@ -52,8 +50,6 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                 child: const Column(
                   children: [
                     _FormWidget(),
-
-                    // _MainActionButtonLogIn(text: 'Войти', buttonStyle: StyleApp.mainBlueButton),
                   ],
                 ),
               ),
@@ -64,301 +60,254 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                   child: Column(
                     children: [
                       _MainActionButtonRegistation(
-                          text: 'Регистрация',
-                          buttonStyle: StyleApp.mainGreenButton),
+                          text: LocaleKeys.registration.tr(),
+                          buttonStyle: StyleApp.mainGreenButton
+                          ),
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        'После регистрации вы получите доступ ко всем возможностям VK ID',
-                        style: StyleApp.mainTextGrey,
-                        textAlign: TextAlign.center,
+                      Center(
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: LocaleKeys.registration_title.tr(),
+                            style: StyleApp.mainTextGrey,
+                            children: [
+                              TextSpan(text: LocaleKeys.registration_title.tr(), style: StyleApp.mainTextGrey),
+                              TextSpan(text: LocaleKeys.registration_title_2.tr(), style: StyleApp.mainTextGrey),
+                              // ! Кнопка чуть выше основного текста - что делать?
+                              WidgetSpan(
+                                child: TextButton(
+                                  onPressed: () {},
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,       // Убираем внутренние отступы
+                                    minimumSize: Size(0, 0),        // Убираем минимальные размеры
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,  // Минимизируем область клика
+                                  ),
+                                  child: Text(LocaleKeys.registration_title_link.tr(), style: StyleApp.titleStyle,
+                                  )
+                                ),
+                              ),
+                              TextSpan(text: LocaleKeys.registration_title_3.tr())
+                            ],
+                          )
+                                          ),
                       ),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('Узнать больше',
-                              style: StyleApp.mainSystemTextBlue))
-                    ],
-                  )),
+                  
             ],
           ),
+        ),
+            ]
+          )
         ),
         bottomNavigationBar: const _BottomLine());
   }
 }
 
 
-// ? попытка создать отдельный класс корзины
-// class Trash extends StatefulWidget {
-//   final logInTextController;
-//   final passwordTextController;
-//   const Trash({super.key, this.logInTextController, this.passwordTextController});
-//   @override
-//   State<Trash> createState() => _TrashState();
-// }
-
-// class _TrashState extends State<Trash> {
-//   final login = logInTextController;
-// void _resetForm() {
-//     var password = widget.passwordTextController.text;
-//     if (password.isNotEmpty) {
-//       widget.passwordTextController.text = '';
-//     }
-//     setState(() {
-      
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return IconButton(
-//                   onPressed: _resetForm,
-//                   icon: const Icon(Icons.delete),
-//                   padding: EdgeInsets.zero,
-//                   splashRadius: 24,
-//                   color: Colors.grey,
-//                 );
-//   }
-// }
 
 
-class _FormWidget extends StatefulWidget {
+class _FormWidget extends StatelessWidget {
   const _FormWidget({super.key});
 
   @override
-  State<_FormWidget> createState() => __FormWidgetState();
-}
-
-class __FormWidgetState extends State<_FormWidget> {
-  bool isChecked = true;
-
-
-
-
-  void _resetForm1() {
-
-    var login = _logInTextController.text;
-    if (login.isNotEmpty) {
-      _logInTextController.text = ''; // ? Почему login.text = ''; не работает?
-      isFieldLoginEmpty = true;
-    }
-    setState(() {
-      
-    });
-  }
-
-
-
-
-    void _resetForm2() {
-    var password = _passwordTextController.text;
-    if (password.isNotEmpty) {
-      _passwordTextController.text = '';
-            isFieldPassEmpty = true;
-    }
-    setState(() {
-      
-    });
-  }
-
-  // var trashIcon = const IconButton(
-  //       onPressed: _resetForm,
-  //       icon: Icon(Icons.delete),
-  //       padding: EdgeInsets.zero,
-  //       splashRadius: 24,
-  //       color: Colors.grey,
-  //       );
-// ! Почему ниже не работает onPressed: _resetForm, отсюда
-  // final textFieldDecoration = const InputDecoration(
-  //     border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.all(Radius.circular(10))),
-  //     contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-  //     isCollapsed: true,
-      // suffixIcon: IconButton(
-      //   onPressed: _resetForm,
-      //   icon: Icon(Icons.delete),
-      //   padding: EdgeInsets.zero,
-      //   splashRadius: 24,
-      //   color: Colors.grey,
-      // ));
-
-// String someLogin = '';
-//                       // var somePass = _passwordTextController.text;
-
-// void kar(boolValue) {
-//                   setState(
-//                     () {
-//                       someLogin = _logInTextController.text;
-//                       // var someLogin = _logInTextController.text;
-//                       // var somePass = _passwordTextController.text;
-//                       print('someLogin: $someLogin');
-//                       // print('somePass: $somePass');
-//                       isChecked = boolValue!;
-//                       // isChecked = true
-//                       // if (isChecked == true) {
-                        
-//                       // print('1');
-//                       // print('someLogin: $someLogin');
-//                       // print('somePass: $somePass');
-//                       // } else {
-//                       //   // isChecked = boolValue!;
-//                       // isChecked = boolValue!;
-//                       //   print('2');
-//                       // }
-                      
-                      
-//                     },
-//                   );
-//                 }
-                
-  // final _logInTextController = TextEditingController(text: someLogin);
-
-  //   final _logInTextController = TextEditingController(); // Инициализируем контроллер без передачи начального текста
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _logInTextController.text = someLogin; // Устанавливаем текст в контроллере при инициализации
-  // }
-
-  final _logInTextController = TextEditingController(text: 'admin');
-  final _passwordTextController = TextEditingController(text: 'admin');
-  
-  
-
-  String? errorText = null;
-
-  void _authorization() {
-    final login = _logInTextController.text;
-    final password = _passwordTextController.text;
-
-    if (login == 'admin' && password == 'admin') {
-      // Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) => const MainScreenWidget()));
-      Navigator.of(context).pushReplacementNamed('/main_screen');
-      errorText = null;
-    } else {
-      errorText = 'Неправильный логин или пароль';
-    }
-
-    if (login.isEmpty && password.isEmpty) {
-      errorText = 'Поля пусты';
-    }
-
-    setState(() {});
-  }
-
-
-  bool isFieldLoginEmpty = false;
-  bool isFieldPassEmpty = false;
-
-  @override
   Widget build(BuildContext context) {
-    // final errorText = this.errorText;
+    final model = AuthModelProvider.read(context)?.model;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // if (errorText != null) Text(errorText),
-        // errorText != null ? Text(errorText!) : SizedBox(),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Логин:', style: StyleApp.mainTextBlack),
-          if (errorText != null)
-            Text(errorText!,
-              style: const TextStyle(color: Colors.red, fontSize: 14)),
+          Text(LocaleKeys.login.tr(), style: StyleApp.mainTextBlack),
+          
         ]),
-
-
+        const _ErrorMessageWidget(),
         TextField(
-          controller: _logInTextController,
-          onChanged: (value) {
-            setState(() {
-              isFieldLoginEmpty = value.isEmpty;
-            });
-          },
+          controller: model?.logInTextController,
           decoration: 
-            InputDecoration(
+            const InputDecoration(
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               isCollapsed: true,
-              suffixIcon: 
-              isFieldLoginEmpty
-                ? null
-              : IconButton(
-                
-                onPressed: _resetForm1,
-
-                icon: Icon(Icons.delete),
-                padding: EdgeInsets.zero,
-                splashRadius: 24,
-                color: Colors.grey,
-              )
               )
               ),
         
 
         // _ShowDeleteButtonLogin(logInTextController),
         const SizedBox(height: 10),
-        Text('Пароль:', style: StyleApp.mainTextBlack),
+        Text(LocaleKeys.password.tr(), style: StyleApp.mainTextBlack),
 
 
         TextField(
-          controller: _passwordTextController,
-          onChanged: (value) {
-            setState(() {
-              isFieldPassEmpty = value.isEmpty;
-            });
-          },
+          controller: model?.passwordTextController,
           decoration: 
-            InputDecoration(
-              border: const OutlineInputBorder(
+            const InputDecoration(
+              border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               isCollapsed: true,
-              suffixIcon: isFieldPassEmpty ? null : IconButton(
-              onPressed: _resetForm2,
-              icon: Icon(Icons.delete),
-              padding: EdgeInsets.zero,
-              splashRadius: 24,
-              color: Colors.grey,
-            )),
+              ),
           obscureText: true
           ),
 
 
-
-        Row(
-          children: [
-            Checkbox(
-                value: isChecked,
-                onChanged: (value) {isChecked=value!;
-                setState(() {
-                  
-                });
-                ;}
-                  
-                // (boolValue) {
-                //   savedInputText(boolValue);
-                // },
-                // savedInputText
-                ),
-            Text('Сохранить вход', style: StyleApp.mainTextGrey),
-            const SizedBox(width: 5),
-            questionMark,
-          ],
-        ),
-        ElevatedButton(
-          onPressed: _authorization,
-          style: StyleApp.mainBlueButton,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Войти', style: TextStyle(fontSize: 18)),
-            ],
-            ))
+        const _AuthButtonWidget()
       ],
     );
+  }
+}
+
+class _AuthButtonWidget extends StatelessWidget {
+  const _AuthButtonWidget({
+    super.key,
+  });
+
+
+  @override
+  Widget build(BuildContext context) {
+    final model = AuthModelProvider.watch(context)?.model;
+    final onPressed = model?.canStartAuth == true ? () => model?.authorization(context) : null;
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: StyleApp.mainBlueButton,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(LocaleKeys.log_in.tr(), style: TextStyle(fontSize: 18)),
+        ],
+        ));
+  }
+}
+
+
+// ! Все что ниже - старая форма, где есть корзинки и save enter. потом надо вернуться и допилить эти методы в модель
+// class _FormWidget extends StatelessWidget {
+//   const _FormWidget({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+//           Text(LocaleKeys.login.tr(), style: StyleApp.mainTextBlack),
+//           if (errorText != null)
+//             Text(errorText!,
+//               style: const TextStyle(color: Colors.red, fontSize: 14)),
+//         ]),
+//         TextField(
+//           controller: _logInTextController,
+//           onChanged: (value) {
+//             setState(() {
+//               isFieldLoginEmpty = value.isEmpty;
+//             });
+//           },
+//           decoration: 
+//             InputDecoration(
+//               border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.all(Radius.circular(10))),
+//               contentPadding:
+//                   EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+//               isCollapsed: true,
+//               suffixIcon: 
+//               isFieldLoginEmpty
+//                 ? null
+//               : IconButton(
+                
+//                 onPressed: _resetForm1,
+
+//                 icon: Icon(Icons.delete),
+//                 padding: EdgeInsets.zero,
+//                 splashRadius: 24,
+//                 color: Colors.grey,
+//               )
+//               )
+//               ),
+        
+
+//         // _ShowDeleteButtonLogin(logInTextController),
+//         const SizedBox(height: 10),
+//         Text(LocaleKeys.password.tr(), style: StyleApp.mainTextBlack),
+
+
+//         TextField(
+//           controller: _passwordTextController,
+//           onChanged: (value) {
+//             setState(() {
+//               isFieldPassEmpty = value.isEmpty;
+//             });
+//           },
+//           decoration: 
+//             InputDecoration(
+//               border: const OutlineInputBorder(
+//                   borderRadius: BorderRadius.all(Radius.circular(10))),
+//               contentPadding:
+//                   const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+//               isCollapsed: true,
+//               suffixIcon: isFieldPassEmpty ? null : IconButton(
+//               onPressed: _resetForm2,
+//               icon: Icon(Icons.delete),
+//               padding: EdgeInsets.zero,
+//               splashRadius: 24,
+//               color: Colors.grey,
+//             )),
+//           obscureText: true
+//           ),
+
+
+
+//         Row(
+//           children: [
+//             Checkbox(
+//                 value: isChecked,
+//                 onChanged: (value) {isChecked=value!;
+//                 setState(() {
+                  
+//                 });
+//                 ;}
+                  
+//                 // (boolValue) {
+//                 //   savedInputText(boolValue);
+//                 // },
+//                 // savedInputText
+//                 ),
+//             Text(LocaleKeys.save_enter.tr(), style: StyleApp.mainTextGrey),
+//             const SizedBox(width: 5),
+//             questionMark,
+//           ],
+//         ),
+//         ElevatedButton(
+//           onPressed: _authorization,
+//           style: StyleApp.mainBlueButton,
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Text(LocaleKeys.log_in.tr(), style: TextStyle(fontSize: 18)),
+//             ],
+//             ))
+//       ],
+//     );
+//   }
+// }
+
+
+
+class _ErrorMessageWidget extends StatelessWidget {
+  const _ErrorMessageWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final errorMessage = AuthModelProvider.watch(context)?.model.errorMessage;
+    if (errorMessage == null) return const SizedBox.shrink();
+    return Text(
+      errorMessage!,
+      style: const TextStyle(
+        color: Colors.red, 
+        fontSize: 14
+        )
+      );
   }
 }
 
@@ -376,12 +325,18 @@ class _BottomLine extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
               child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (context.locale == Locale('ru')) {
+                      context.setLocale(Locale('en'));
+                    } else {
+                      context.setLocale(Locale('ru'));
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.language, color: systemTextBlueColor),
-                      Text(' Language', style: StyleApp.mainSystemTextBlue),
+                      Text(LocaleKeys.language.tr(), style: StyleApp.mainSystemTextBlue),
                     ],
                   ))),
           const SizedBox(width: 16),
@@ -391,7 +346,7 @@ class _BottomLine extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Тема', style: StyleApp.mainSystemTextBlue),
+                      Text(LocaleKeys.theme.tr(), style: StyleApp.mainSystemTextBlue),
                       const Icon(Icons.format_paint_outlined)
                     ],
                   ))),
@@ -402,28 +357,6 @@ class _BottomLine extends StatelessWidget {
   }
 }
 
-// class _MainActionButtonLogIn extends StatelessWidget {
-//   final String text;
-//   final ButtonStyle buttonStyle;
-//     void _authorization () {
-//       _logInTextController.text
-//     }
-
-//   const _MainActionButtonLogIn({super.key, required this.text, required this.buttonStyle});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ElevatedButton(
-//       onPressed: _authorization,
-//       style: buttonStyle,
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Text(text, style: TextStyle(fontSize: 18)),
-//         ],
-//       ));
-//   }
-// }
 
 class _MainActionButtonRegistation extends StatelessWidget {
   final String text;
@@ -445,54 +378,3 @@ class _MainActionButtonRegistation extends StatelessWidget {
         ));
   }
 }
-
-
-
-
-
-
-// class _ShowDeleteButtonLogin extends StatefulWidget {
-//     final logInTextController;
-//   const _ShowDeleteButtonLogin({super.key, required this.logInTextController});
-
-//   @override
-//   State<_ShowDeleteButtonLogin> createState() => __ShowDeleteButtonLoginState();
-// }
-
-
-
-// class __ShowDeleteButtonLoginState extends State<_ShowDeleteButtonLogin> {
-
-//   void _resetForm1(logInTextController) {
-//     var login = logInTextController.text;
-//     if (login.isNotEmpty) {
-//       logInTextController.text = ''; // ? Почему login.text = ''; не работает?
-//     }
-//     setState(() {
-      
-//     });
-//   }
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//           controller: logInTextController,
-//           decoration: 
-          
-//           const InputDecoration(
-//               border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.all(Radius.circular(10))),
-//               contentPadding:
-//                   EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-//               isCollapsed: true,
-//               suffixIcon: IconButton(
-//                 onPressed: _resetForm1,
-//                 icon: Icon(Icons.delete),
-//                 padding: EdgeInsets.zero,
-//                 splashRadius: 24,
-//                 color: Colors.grey,
-//               ))
-//         );
-//   }
-// }

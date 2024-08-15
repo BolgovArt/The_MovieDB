@@ -19,5 +19,8 @@ Widget pingZakrep(Color colorParam) { return SvgPicture.asset('assets/images/for
 Widget trashIcon(Color colorParam) { return SvgPicture.asset('assets/images/delete_icon.svg', color: colorParam);}
 
 
+final Widget logoTheMVDB = SvgPicture.asset('assets/images/LogoTheMVDB.svg', width: 40, height: 55, color: Color.fromARGB(255, 4, 40, 85));
+
+
 // final Widget avatar = Image.asset('assets/images/avatar.jpg', height: 12);
 
