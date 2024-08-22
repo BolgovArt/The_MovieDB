@@ -169,15 +169,18 @@ class _AuthButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = AuthModelProvider.watch(context)?.model;
     final onPressed = model?.canStartAuth == true ? () => model?.authorization(context) : null;
+    final child = model?.isAuthProgress == true ? SizedBox(width: 15, height: 15, child: const CircularProgressIndicator()) : const Text('Login');
     return ElevatedButton(
       onPressed: onPressed,
       style: StyleApp.mainBlueButton,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(LocaleKeys.log_in.tr(), style: TextStyle(fontSize: 18)),
-        ],
-        ));
+      child: child,
+      // child: Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Text(LocaleKeys.log_in.tr(), style: TextStyle(fontSize: 18)),
+      //   ],
+      //   )
+        );
   }
 }
 

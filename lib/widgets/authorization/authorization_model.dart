@@ -1,99 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:vk/domain/api_client/api_client.dart';
 
 class AuthModel extends ChangeNotifier {
 
 
-// все что ниже - код из stf _FormWidget, когда он ещё был stf
-
-// bool isChecked = true;
-
-//   void _resetForm1() {
-
-//     var login = _logInTextController.text;
-//     if (login.isNotEmpty) {
-//       _logInTextController.text = '';
-//       isFieldLoginEmpty = true;
-//     }
-//     setState(() {
-      
-//     });
-//   }
+  final _apiClient = ApiClient();
 
 
-//     void _resetForm2() {
-//     var password = _passwordTextController.text;
-//     if (password.isNotEmpty) {
-//       _passwordTextController.text = '';
-//             isFieldPassEmpty = true;
-//     }
-//     setState(() {
-      
-//     });
-//   }
+  // final logInTextController = TextEditingController(text: 'admin');
+  // final passwordTextController = TextEditingController(text: 'admin');
 
-
-  // final _logInTextController = TextEditingController(text: 'admin');
-  // final _passwordTextController = TextEditingController(text: 'admin');
   
-  
-
-  // String? errorText = null;
-
-//   void _authorization() {
-//     final login = _logInTextController.text;
-//     final password = _passwordTextController.text;
-
-//     if (login == 'admin' && password == 'admin') {
-//       Navigator.of(context).pushReplacementNamed('/main_screen');
-//       errorText = null;
-//     } else {
-//       errorText = LocaleKeys.error_login_or_password.tr();
-//     }
-
-//     if (login.isEmpty && password.isEmpty) {
-//       errorText = LocaleKeys.error_empty_fields.tr();
-//     }
-
-//     setState(() {});
-//   }
-
-
-//   bool isFieldLoginEmpty = false;
-//   bool isFieldPassEmpty = false;
-
-
-
-
-
-
-  final logInTextController = TextEditingController(text: 'admin');
-  final passwordTextController = TextEditingController(text: 'admin');
+  final logInTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
 
   bool _isAuthProgress = false;
   bool get canStartAuth => !_isAuthProgress;
+  bool get isAuthProgress => _isAuthProgress;
   
 
-  String? errorMessage = null;
+  String? _errorMessage = null;
+  String? get errorMessage => _errorMessage;
 
   Future<void> authorization(BuildContext context) async {
-  //   final login = _logInTextController.text;
-  //   final password = _passwordTextController.text;
 
-  //   if (login == 'admin' && password == 'admin') {
-  //     Navigator.of(context).pushReplacementNamed('/main_screen');
-  //     errorText = null;
-  //   } else {
-  //     errorText = LocaleKeys.error_login_or_password.tr();
-  //   }
+    final login = logInTextController.text;
+    final password = passwordTextController.text;
 
-  //   if (login.isEmpty && password.isEmpty) {
-  //     errorText = LocaleKeys.error_empty_fields.tr();
-  //   }
-
-  //   setState(() {});
-  // }
-
-
+    if (login.isEmpty || password.isEmpty) {
+      _errorMessage = 'Заполните логин и пароль';
+      notifyListeners();
+      return;
+    }
+    _errorMessage = null;
+    _isAuthProgress = true;
+    notifyListeners();
+    String? sessionId;
+    try {
+      sessionId = await _apiClient.auth(username: login, password: password);
+      // _isAuthProgress = false;
+      // notifyListeners();
+    } catch (e) {
+      _errorMessage = 'Неправильный логин/пароль/нет инета/сервер крякнул/телефон сломался хз';
+    }
+    _isAuthProgress = false;
+    if (_errorMessage != null || sessionId == null) {
+    notifyListeners();
+    }
+    print('Все хорошо');
+    // Navigator.of(context).pop();
 }
 }
 
