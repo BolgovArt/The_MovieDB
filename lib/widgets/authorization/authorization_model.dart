@@ -59,33 +59,7 @@ class AuthModel extends ChangeNotifier {
     }
     print('Все хорошо');
     await _sessionDataProvider.setSessionId(sessionId);
-    unawaited(Navigator.of(context).pushNamed(MainNavigationRouteNames.mainScreen));
-    
+    unawaited(Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.mainScreen));
+     
   }
 }
-
-class AuthModelProvider extends InheritedNotifier {
-  final AuthModel model;
-
-  const AuthModelProvider({
-  Key? key,
-  required this.model,
-  required Widget child,
-}) : super(
-  key: key,
-  notifier: model,
-  child: child,
-);
-
-  static AuthModelProvider? watch(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AuthModelProvider>();
-  }
-
-  static AuthModelProvider? read(BuildContext context) {
-    final widget = 
-      context.getElementForInheritedWidgetOfExactType<AuthModelProvider>()?.widget;
-    return widget is AuthModelProvider ? widget : null; // Эта строка кода в Dart проверяет, является ли объект widget экземпляром класса StartPageModelProvider. Если да, то возвращает widget, иначе возвращает null
-  }
-
-}
-

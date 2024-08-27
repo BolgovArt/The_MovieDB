@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:vk/domain/data_providers/session_data_provider.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
 import 'package:vk/widgets/main_screen/messages/messages_page.dart';
+import 'package:vk/domain/data_providers/session_data_provider.dart';
 
 
 
@@ -53,8 +55,12 @@ int _currentTabIndex = 0;
       appBar: AppBar(
         title: _titleOptions[_currentTabIndex],
         actions: [Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: vkTextAndLogo
+          padding:  EdgeInsets.only(right: 16),
+          child: IconButton(
+            onPressed: () => SessionDataProvider().setSessionId(null),
+            icon: Icon(Icons.arrow_back)
+            )
+          // child: () => IconButton(onPressed: SessionDataProvider().setSessionId(null))
           )],
       ),
       body: IndexedStack(

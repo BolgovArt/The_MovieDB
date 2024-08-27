@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/widgets/authorization/authorization_model.dart';
 import 'package:vk/widgets/authorization/authorization_widget.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
@@ -15,7 +16,7 @@ abstract class MainNavigationRouteNames {
 class MainNavigation {
   String initialRoute(bool isAuthProgress) => isAuthProgress ? MainNavigationRouteNames.mainScreen : MainNavigationRouteNames.authorization;
   final routes = <String, WidgetBuilder>{
-    MainNavigationRouteNames.authorization: (context) => AuthModelProvider(model: AuthModel(), child: const AuthorizationWidget()),
+    MainNavigationRouteNames.authorization: (context) => NotifierProvider(model: AuthModel(), child: const AuthorizationWidget()),
         MainNavigationRouteNames.mainScreen: (context) => const MainScreenWidget(),
         // '/main_screen/dialog': (context) {
         //   final arguments = ModalRoute.of(context)!.settings.arguments;
