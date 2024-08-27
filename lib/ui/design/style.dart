@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vk/design/colors.dart';
+import 'package:vk/ui/design/colors.dart';
 
 class StyleApp {
   static TextStyle titleStyle = const TextStyle(fontFamily: 'VK_sans', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 17, 69, 133));

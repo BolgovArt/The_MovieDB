@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:vk/domain/api_client/api_client.dart';
+import 'package:vk/domain/data_providers/session_data_provider.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
 
 class AuthModel extends ChangeNotifier {
 
 
   final _apiClient = ApiClient();
+  final _sessionDataProvider = SessionDataProvider();
 
 
   // final logInTextController = TextEditingController(text: 'admin');
@@ -47,9 +52,16 @@ class AuthModel extends ChangeNotifier {
     if (_errorMessage != null || sessionId == null) {
     notifyListeners();
     }
+    if (sessionId == null) {
+      _errorMessage = 'че-то с серверной частью беда';
+      notifyListeners();
+      return;
+    }
     print('Все хорошо');
-    // Navigator.of(context).pop();
-}
+    await _sessionDataProvider.setSessionId(sessionId);
+    unawaited(Navigator.of(context).pushNamed(MainNavigationRouteNames.mainScreen));
+    
+  }
 }
 
 class AuthModelProvider extends InheritedNotifier {

@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:vk/design/colors.dart';
-import 'package:vk/widgets/authorization/authorization_model.dart';
-import 'package:vk/widgets/authorization/authorization_widget.dart';
-import 'package:vk/widgets/main_screen/main_screen_widget.dart';
-import 'package:vk/widgets/main_screen/messages/dialog.dart';
+import 'package:vk/ui/design/colors.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:vk/widgets/app/my_app_model.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final MyAppModel model;
+  static final mainNavigation = MainNavigation();
+  const MyApp({super.key, required this.model});
 
 
   @override
@@ -20,28 +19,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        // colorScheme: ColorScheme.dark(),
         useMaterial3: true,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           selectedItemColor: systemTextBlueColor,
           unselectedItemColor: Colors.grey,
         )
       ),
-      // home: AuthorizationWidget(),
-
-      routes: {
-        '/authorization': (context) => AuthModelProvider(model: AuthModel(), child: const AuthorizationWidget()),
-        '/main_screen': (context) => const MainScreenWidget(),
-        '/main_screen/dialog': (context) {
-          final arguments = ModalRoute.of(context)!.settings.arguments;
-          if (arguments is int) {
-          return DialogScreen(dialogId: arguments);
-          } else {
-            return DialogScreen(dialogId: 0);
-          }
-        },
-      },
-      initialRoute: '/authorization',
+      routes: mainNavigation.routes,
+      initialRoute: mainNavigation.initialRoute(model.isAuth),
+      onGenerateRoute: mainNavigation.onGenerateRoute,
     );
   }
 }

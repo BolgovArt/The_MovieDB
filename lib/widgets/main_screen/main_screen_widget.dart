@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:vk/design/colors.dart';
-import 'package:vk/design/images.dart';
-import 'package:vk/design/style.dart';
+import 'package:vk/ui/design/colors.dart';
+import 'package:vk/ui/design/images.dart';
+import 'package:vk/ui/design/style.dart';
 import 'package:vk/widgets/main_screen/messages/messages_page.dart';
 
 

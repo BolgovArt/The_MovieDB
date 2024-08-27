@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:vk/design/style.dart';
+import 'package:vk/ui/design/style.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
 
 class DialogRow {
   final int id;
@@ -122,7 +123,7 @@ var _filteredMessageList = <DialogRow>[];
 
   void _onDialog(index) {
     final id = _messageList[index].id;
-    Navigator.of(context).pushNamed('/main_screen/dialog', arguments: id);
+    Navigator.of(context).pushNamed(MainNavigationRouteNames.movieDetails, arguments: id);
   }
 
 
