@@ -45,19 +45,25 @@ class AuthModel extends ChangeNotifier {
       sessionId = await _apiClient.auth(username: login, password: password);
       // _isAuthProgress = false;
       // notifyListeners();
-    } catch (e) {
-      _errorMessage = 'Неправильный логин/пароль/нет инета/сервер крякнул/телефон сломался хз';
-    }
+    } on ApiClientException catch (e) {
+      switch (e.type) {
+        case ApiClientExceptionType.Network:
+          _errorMessage = 'Сервер недоступен. Проверьте подключение к интернету.';
+        case ApiClientExceptionType.Auth:
+          _errorMessage = 'Неверный логин/пароль';
+        case ApiClientExceptionType.Other:
+          _errorMessage = 'Произошла ошибка, попробуйте ещё раз.';
+      }
+    } 
     _isAuthProgress = false;
     if (_errorMessage != null || sessionId == null) {
     notifyListeners();
     }
-    if (sessionId == null) {
-      _errorMessage = 'че-то с серверной частью беда';
-      notifyListeners();
-      return;
-    }
-    print('Все хорошо');
+    // if (sessionId == null) {
+    //   _errorMessage = 'че-то с серверной частью беда';
+    //   notifyListeners();
+    //   return;
+    // }
     await _sessionDataProvider.setSessionId(sessionId);
     unawaited(Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.mainScreen));
      
