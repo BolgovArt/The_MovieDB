@@ -4,8 +4,7 @@ import 'package:vk/domain/data_providers/session_data_provider.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
-import 'package:vk/widgets/main_screen/messages/messages_page.dart';
-import 'package:vk/domain/data_providers/session_data_provider.dart';
+import 'package:vk/widgets/main_screen/messages/movies_page.dart';
 
 
 
@@ -19,9 +18,7 @@ class MainScreenWidget extends StatefulWidget {
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
 
-  
-
-int _currentTabIndex = 0;
+int _currentTabIndex = 1;
   void onSelectTab(int index) {
     if (_currentTabIndex == index) return; // не будем обновлять state, если вкладка уже выбрана
     setState(() {
@@ -29,24 +26,11 @@ int _currentTabIndex = 0;
     });
   }
 
-  // static const List<Widget> _widgetOptions = <Widget> [
-  //   Text('1'),
-  //   MessagePage(),
-  //   Text('3'),
-  // ];
-
-
 
   static final List<Widget> _titleOptions = <Widget> [
-    // Row(
-    //   children: [
-    //     avatar,
-    //     Text('Главная', style: StyleApp.titleStyle),
-    //   ],
-    // ),
-    Text('Главная', style: StyleApp.titleStyle),
-    Text('Чаты', style: StyleApp.titleStyle,),
-    Text('Музыка', style: StyleApp.titleStyle,),
+    Text('Новости', style: StyleApp.titleStyle),
+    Text('Фильмы', style: StyleApp.titleStyle,),
+    Text('Сериалы', style: StyleApp.titleStyle,),
   ];
 
   @override
@@ -54,32 +38,39 @@ int _currentTabIndex = 0;
     return Scaffold(
       appBar: AppBar(
         title: _titleOptions[_currentTabIndex],
-        actions: [Padding(
+        actions: [
+          Padding(
           padding:  EdgeInsets.only(right: 16),
-          child: IconButton(
-            onPressed: () => SessionDataProvider().setSessionId(null),
-            icon: Icon(Icons.arrow_back)
-            )
-          // child: () => IconButton(onPressed: SessionDataProvider().setSessionId(null))
-          )],
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => SessionDataProvider().setSessionId(null),
+                icon: Icon(Icons.logout_rounded)
+                ),
+              Text('Выход из \nаккаунта'),
+            ],
+          )
+          )
+        ],
       ),
-      body: IndexedStack(
-        index: _currentTabIndex,
-        children: [
-          // Image.asset('assets/images/avatar.jpg', height: 12, width: 12),
-          // Image.asset('assets/images/avatar.jpg', width: 150, height: 150),
-          // Text('1'),
-          MessagePage(),
-          Text('3'),
-        ]
-        ),
+      body: Container(
+        color: Colors.blueGrey,
+        child: IndexedStack(
+          index: _currentTabIndex,
+          children: [
+            Text('1'),
+            FilmsPage(),
+            Text('3'),
+          ]
+          ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentTabIndex,
         onTap: onSelectTab,
         items: [
-          BottomNavigationBarItem(icon: bottomHomeIcon(Colors.grey), label: 'Главная', activeIcon: bottomHomeIcon(systemTextBlueColor)),
-          BottomNavigationBarItem(icon: bottomChatIcon(Colors.grey), label: 'Чаты', activeIcon: bottomChatIcon(systemTextBlueColor)),
-          BottomNavigationBarItem(icon: bottomMusicIcon(Colors.grey), label: 'Музыка', activeIcon: bottomMusicIcon(systemTextBlueColor)),
+          BottomNavigationBarItem(icon: bottomHomeIcon(Colors.grey), label: 'Новости', activeIcon: bottomHomeIcon(systemTextBlueColor)),
+          BottomNavigationBarItem(icon: bottomChatIcon(Colors.grey), label: 'Фильмы', activeIcon: bottomChatIcon(systemTextBlueColor)),
+          BottomNavigationBarItem(icon: bottomMusicIcon(Colors.grey), label: 'Сериалы', activeIcon: bottomMusicIcon(systemTextBlueColor)),
         ]
       ),
     );
