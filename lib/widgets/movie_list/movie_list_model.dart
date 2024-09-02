@@ -7,6 +7,9 @@ import 'package:vk/ui/navigation/main_navigation.dart';
 class MovieListModel extends ChangeNotifier{
   final _apiClient = ApiClient();
   final _movies = <Movie>[];
+  late int _currentPage;
+  late int _totalPage;
+  var _isLoadingInProgress = false;
   List<Movie> get movies => List.unmodifiable(_movies);
   // final _dateFormat = DateFormat.yMMMMd();
   late DateFormat _dateFormat;
@@ -21,14 +24,28 @@ class MovieListModel extends ChangeNotifier{
     _locale = locale;
     _dateFormat = DateFormat.yMMMMd(locale);
     _movies.clear();
+    _currentPage = 0;
+    _totalPage = 1;
     _loadMovies();
 
   }
 
   Future<void> _loadMovies() async {
-    final moviesResponse = await _apiClient.popularFilms(1, _locale);
+    if (_isLoadingInProgress || _currentPage >= _totalPage) return;
+    _isLoadingInProgress = true;
+    final nextPage = _currentPage + 1;
+    try {
+    final moviesResponse = await _apiClient.popularFilms(nextPage, _locale);
+    // _currentPage = moviesResponse.page;
+    _currentPage++;
+    _totalPage++;
     _movies.addAll(moviesResponse.movies);
+    _isLoadingInProgress = false;
     notifyListeners();
+    } catch (e) {
+      _isLoadingInProgress = false;
+      // какое-то оповещение пользователю
+    }
   }
 
   void onFilmTap(BuildContext context, int index) {
@@ -38,4 +55,10 @@ class MovieListModel extends ChangeNotifier{
       arguments: id
     );
   }
+
+  void showFilmAtIndex(index) {
+    if (index < _movies.length - 1) return;
+    _loadMovies();
+  }
+
 }

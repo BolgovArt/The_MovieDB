@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:vk/widgets/app/my_app.dart';
 import 'package:vk/widgets/app/my_app_model.dart';
 
-void main() async {
+void main() async { 
   WidgetsFlutterBinding.ensureInitialized();
   // await EasyLocalization.ensureInitialized();
     WidgetsFlutterBinding.ensureInitialized();
