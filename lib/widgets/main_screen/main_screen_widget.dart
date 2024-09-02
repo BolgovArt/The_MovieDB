@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:vk/domain/data_providers/session_data_provider.dart';
+import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
-import 'package:vk/widgets/main_screen/messages/movies_page.dart';
+import 'package:vk/widgets/movie_list/movie_list_model.dart';
+import 'package:vk/widgets/movie_list/movies_list_widget.dart';
 
 
 
@@ -17,6 +19,8 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
+  final movieListModel = MovieListModel();
+
 
 int _currentTabIndex = 1;
   void onSelectTab(int index) {
@@ -24,6 +28,12 @@ int _currentTabIndex = 1;
     setState(() {
     _currentTabIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    movieListModel.loadMovies();
   }
 
 
@@ -58,9 +68,10 @@ int _currentTabIndex = 1;
         child: IndexedStack(
           index: _currentTabIndex,
           children: [
-            Text('1'),
-            FilmsPage(),
-            Text('3'),
+            const Text('1'),
+            NotifierProvider(model: movieListModel,
+            child: const MovieListWidget()),
+            const Text('3'),
           ]
           ),
       ),
