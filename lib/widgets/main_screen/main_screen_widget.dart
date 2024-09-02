@@ -33,7 +33,15 @@ int _currentTabIndex = 1;
   @override
   void initState() {
     super.initState();
-    movieListModel.loadMovies();
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    movieListModel.setupLocale(context);
+    
   }
 
 

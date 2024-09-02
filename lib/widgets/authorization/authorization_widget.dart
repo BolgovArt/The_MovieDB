@@ -4,7 +4,7 @@ import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
-import 'package:easy_localization/easy_localization.dart';
+// import 'package:easy_localization/easy_localization.dart';
 import 'package:vk/generated/locale_keys.g.dart';
 import 'package:vk/widgets/authorization/authorization_model.dart';
 
@@ -33,7 +33,8 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                   const SizedBox(height: 40),
                   logoTheMVDB,
                   const SizedBox(height: 10),
-                  Text(LocaleKeys.app_title.tr(), style: StyleApp.titleStyle),
+                  // Text(LocaleKeys.app_title.tr(), style: StyleApp.titleStyle),
+                  Text('LocaleKeys.app_title.tr()', style: StyleApp.titleStyle),
                 ],
               ),
             ),
@@ -61,7 +62,8 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                   child: Column(
                     children: [
                       _MainActionButtonRegistation(
-                          text: LocaleKeys.registration.tr(),
+                          // text: LocaleKeys.registration.tr(),
+                          text: 'LocaleKeys.registration.tr()',
                           buttonStyle: StyleApp.mainGreenButton
                           ),
                       const SizedBox(
@@ -71,11 +73,14 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: LocaleKeys.registration_title.tr(),
+                            // text: LocaleKeys.registration_title.tr(),
+                            text: 'LocaleKeys.registration_title.tr()',
                             style: StyleApp.mainTextGrey,
                             children: [
-                              TextSpan(text: LocaleKeys.registration_title.tr(), style: StyleApp.mainTextGrey),
-                              TextSpan(text: LocaleKeys.registration_title_2.tr(), style: StyleApp.mainTextGrey),
+                              // TextSpan(text: LocaleKeys.registration_title.tr(), style: StyleApp.mainTextGrey),
+                              TextSpan(text: 'LocaleKeys.registration_title.tr()', style: StyleApp.mainTextGrey),
+                              // TextSpan(text: LocaleKeys.registration_title_2.tr(), style: StyleApp.mainTextGrey),
+                              TextSpan(text: 'LocaleKeys.registration_title_2.tr()', style: StyleApp.mainTextGrey),
                               // ! Кнопка чуть выше основного текста - что делать?
                               WidgetSpan(
                                 child: TextButton(
@@ -85,11 +90,13 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                                     minimumSize: Size(0, 0),        // Убираем минимальные размеры
                                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,  // Минимизируем область клика
                                   ),
-                                  child: Text(LocaleKeys.registration_title_link.tr(), style: StyleApp.titleStyle,
+                                  // child: Text(LocaleKeys.registration_title_link.tr(), style: StyleApp.titleStyle,
+                                  child: Text('LocaleKeys.registration_title_link.tr()', style: StyleApp.titleStyle,
                                   )
                                 ),
                               ),
-                              TextSpan(text: LocaleKeys.registration_title_3.tr())
+                              // TextSpan(text: LocaleKeys.registration_title_3.tr())
+                              TextSpan(text: 'LocaleKeys.registration_title_3.tr()')
                             ],
                           )
                                           ),
@@ -118,7 +125,8 @@ class _FormWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(LocaleKeys.login.tr(), style: StyleApp.mainTextBlack),
+          // Text(LocaleKeys.login.tr(), style: StyleApp.mainTextBlack),
+          Text('LocaleKeys.login.tr()', style: StyleApp.mainTextBlack),
           
         ]),
         const _ErrorMessageWidget(),
@@ -137,7 +145,8 @@ class _FormWidget extends StatelessWidget {
 
         // _ShowDeleteButtonLogin(logInTextController),
         const SizedBox(height: 10),
-        Text(LocaleKeys.password.tr(), style: StyleApp.mainTextBlack),
+        // Text(LocaleKeys.password.tr(), style: StyleApp.mainTextBlack),
+        Text('LocaleKeys.password.tr()', style: StyleApp.mainTextBlack),
 
 
         TextField(
@@ -327,22 +336,22 @@ class _BottomLine extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(width: 16),
-          Expanded(
-              child: TextButton(
-                  onPressed: () {
-                    if (context.locale == Locale('ru')) {
-                      context.setLocale(Locale('en'));
-                    } else {
-                      context.setLocale(Locale('ru'));
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.language, color: systemTextBlueColor),
-                      Text(LocaleKeys.language.tr(), style: StyleApp.mainSystemTextBlue),
-                    ],
-                  ))),
+          // Expanded(
+          //     child: TextButton(
+          //         onPressed: () {
+          //           if (context.locale == Locale('ru')) {
+          //             context.setLocale(Locale('en'));
+          //           } else {
+          //             context.setLocale(Locale('ru'));
+          //           }
+          //         },
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             const Icon(Icons.language, color: systemTextBlueColor),
+          //             Text(LocaleKeys.language.tr(), style: StyleApp.mainSystemTextBlue),
+          //           ],
+          //         ))),
           const SizedBox(width: 16),
           Expanded(
               child: TextButton(
@@ -350,7 +359,8 @@ class _BottomLine extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(LocaleKeys.theme.tr(), style: StyleApp.mainSystemTextBlue),
+                      // Text(LocaleKeys.theme.tr(), style: StyleApp.mainSystemTextBlue),
+                      Text('LocaleKeys.theme.tr()', style: StyleApp.mainSystemTextBlue),
                       const Icon(Icons.format_paint_outlined)
                     ],
                   ))),
