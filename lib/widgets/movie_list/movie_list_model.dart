@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk/domain/api_client/api_client.dart';
 import 'package:vk/domain/entity/movie.dart';
+import 'package:vk/domain/entity/popular_movie_responce.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 
 class MovieListModel extends ChangeNotifier{
@@ -10,32 +13,48 @@ class MovieListModel extends ChangeNotifier{
   late int _currentPage;
   late int _totalPage;
   var _isLoadingInProgress = false;
+  String? _searchQuery;
   List<Movie> get movies => List.unmodifiable(_movies);
   // final _dateFormat = DateFormat.yMMMMd();
   late DateFormat _dateFormat;
   String _locale = '';
+  Timer? searchDebounce; 
 
   String stringFromDate(DateTime? date) => date != null ? _dateFormat.format(date) : ''; // DateFormat создается единожды, если оставить его в _widget.dart то он будет создаваться заново на каждый фильм
 
-  void setupLocale(BuildContext context) {
+  void setupLocale(BuildContext context) async {
     final locale = Localizations.localeOf(context).toLanguageTag();
     print(locale); // Должена быть Ru. В видосе только на Ihone установил ru, Android потом сказал
     if (_locale == locale) return; 
     _locale = locale;
     _dateFormat = DateFormat.yMMMMd(locale);
-    _movies.clear();
-    _currentPage = 0;
-    _totalPage = 1;
-    _loadMovies();
+    await _resetList();
 
   }
 
-  Future<void> _loadMovies() async {
+  Future<void> _resetList() async {
+    _movies.clear();
+    _currentPage = 0;
+    _totalPage = 1;
+    await _loadNextPage();
+  }
+
+  Future<PopularMovieResponce> _loadFilms(int nextPage, String locale) async {
+    final query = _searchQuery;
+    if (query == null) {
+      return await _apiClient.popularFilms(nextPage, _locale);
+    } else {
+      return await _apiClient.searchFilms(nextPage, _locale, query);
+    }
+  }
+  
+
+  Future<void> _loadNextPage() async {
     if (_isLoadingInProgress || _currentPage >= _totalPage) return;
     _isLoadingInProgress = true;
     final nextPage = _currentPage + 1;
     try {
-    final moviesResponse = await _apiClient.popularFilms(nextPage, _locale);
+    final moviesResponse = await _loadFilms(nextPage, _locale);
     // _currentPage = moviesResponse.page;
     _currentPage++;
     _totalPage++;
@@ -58,7 +77,18 @@ class MovieListModel extends ChangeNotifier{
 
   void showFilmAtIndex(index) {
     if (index < _movies.length - 1) return;
-    _loadMovies();
+    _loadNextPage();
+  }
+
+
+  Future<void> searchFilm(String text) async {
+    searchDebounce?.cancel();
+    searchDebounce = Timer(const Duration(microseconds: 250), () async {
+      final searchQuery = text.isNotEmpty ? text : null;
+    if (_searchQuery == searchQuery) return;
+    _searchQuery == searchQuery;
+    await _resetList();
+    });
   }
 
 }

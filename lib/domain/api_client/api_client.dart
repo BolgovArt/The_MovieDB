@@ -178,5 +178,28 @@ class ApiClient {
   }
 
 
+  Future<PopularMovieResponce> searchFilms(int page, String locale, String query) async {
+    parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = PopularMovieResponce.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = _get(
+      unsplashUrl,
+      '/3/search/movie',
+      parser,
+      <String, dynamic>{
+        'api_key': _apiKey,
+        'page': page.toString(),
+        'language': locale,
+        'query': query,
+        'include_adult': true.toString(),
+        },
+    );
+    return result;
+  }
+
+
 
 }
