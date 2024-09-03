@@ -84,7 +84,7 @@ class MovieListWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16,),
                 child: TextField(
-                  onChanged: model.searchFilm,
+                  onChanged: model.searchFilms,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Color.fromARGB(235, 220, 223, 226),

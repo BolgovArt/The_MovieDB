@@ -81,12 +81,12 @@ class MovieListModel extends ChangeNotifier{
   }
 
 
-  Future<void> searchFilm(String text) async {
+  Future<void> searchFilms(String text) async {
     searchDebounce?.cancel();
     searchDebounce = Timer(const Duration(microseconds: 250), () async {
       final searchQuery = text.isNotEmpty ? text : null;
     if (_searchQuery == searchQuery) return;
-    _searchQuery == searchQuery;
+    _searchQuery = searchQuery;
     await _resetList();
     });
   }

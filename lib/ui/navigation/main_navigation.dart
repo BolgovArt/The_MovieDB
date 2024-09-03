@@ -3,7 +3,7 @@ import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/widgets/authorization/authorization_model.dart';
 import 'package:vk/widgets/authorization/authorization_widget.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
-import 'package:vk/widgets/main_screen/messages/dialog.dart';
+import 'package:vk/widgets/movie_details/film_page_widget.dart';
 
 abstract class MainNavigationRouteNames {
   static const authorization = 'authorization';
@@ -33,7 +33,7 @@ class MainNavigation {
         final arguments = settings.arguments;
         final movieId = arguments is int ? arguments : 0;
         return MaterialPageRoute(
-          builder: (context) => DialogScreen (dialogId: movieId),
+          builder: (context) => MovieDetailsWidget(movieId: movieId,),
           );
         default: 
           const widget = Text('Navigation error');
