@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:vk/domain/entity/movie_details.dart';
 import 'package:vk/domain/entity/popular_movie_responce.dart';
 
 enum ApiClientExceptionType { Network, Auth, Other }
@@ -49,9 +50,9 @@ class ApiClient {
     } on ApiClientException {
       rethrow;
     } 
-    catch (_) {
-      throw ApiClientException(ApiClientExceptionType.Other);
-    }
+    // catch (_) {
+    //   throw ApiClientException(ApiClientExceptionType.Other);
+    // }
   }
 
   Future<T> _post<T>(
@@ -200,6 +201,28 @@ class ApiClient {
     return result;
   }
 
+
+Future<MovieDetails> movieDetails(
+  int movieId, 
+  String locale,
+  ) async {
+    parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = MovieDetails.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = _get(
+      unsplashUrl,
+      '/3/movie/$movieId',
+      parser,
+      <String, dynamic>{
+        'api_key': _apiKey,
+        'language': locale,
+        },
+    );
+    return result;
+  }
 
 
 }

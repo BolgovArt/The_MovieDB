@@ -77,8 +77,11 @@ int _currentTabIndex = 1;
           index: _currentTabIndex,
           children: [
             const Text('1'),
-            NotifierProvider(model: movieListModel,
-            child: const MovieListWidget()),
+            NotifierProvider(
+              create:() => movieListModel, // теперь у NotifierProvider появился dispose, но здесь он не нужен. в provider.dart добавляем final isManagingModel
+              isManagingModel: false,
+              child: const MovieListWidget()
+            ),
             const Text('3'),
           ]
           ),
