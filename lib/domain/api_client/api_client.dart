@@ -24,8 +24,8 @@ class ApiClient {
     required String password,
   }) async {
     final token = await _getToken();
-    print('username: $username');
-    print('password: $password');
+    // print('username: $username');
+    // print('password: $password');
     final validateToken = await _validateUser(
         username: username, password: password, requestToken: token);
     final sessionId = await _makeSession(requestToken: validateToken);
@@ -219,6 +219,7 @@ Future<MovieDetails> movieDetails(
       <String, dynamic>{
         'api_key': _apiKey,
         'language': locale,
+        'append_to_response': 'credits',
         },
     );
     return result;

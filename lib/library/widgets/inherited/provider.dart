@@ -36,8 +36,6 @@ class NotifierProvider<Model extends ChangeNotifier> extends StatefulWidget {
   }
 }
 
-
-
 class _NotifierProviderState<Model extends ChangeNotifier> 
     extends State<NotifierProvider<Model>> {
   late final Model _model;
