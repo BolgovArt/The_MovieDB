@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:vk/domain/api_client/api_client.dart';
-import 'package:vk/domain/entity/movie_details.dart';
 import 'package:vk/domain/entity/movie_details_credits.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 
 class MovieDetailsMainInfoWidget extends StatelessWidget {
@@ -53,7 +52,7 @@ class _DescriptionWidget extends StatelessWidget {
     
     return Text(
       model?.movieDetails?.overview ?? '',
-      style: TextStyle(
+      style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -131,10 +130,12 @@ class _ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MoviePageModel>(context);
-    // var voteAverage = model?.movieDetails?.voteAverage ?? 0;
+    final movieDetails = NotifierProvider.watch<MoviePageModel>(context)?.movieDetails;
+    // var voteAverage = movieDetails?.voteAverage ?? 0;
     // voteAverage = voteAverage * 10;
     // voteAverage.toStringAsFixed(0);
+    final videos = movieDetails?.videos.results.where((video) => video.type == 'Trailer' && video.site == 'YouTube');
+    final trailerKey = videos?.isNotEmpty == true ? videos?.first.key : null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -161,16 +162,20 @@ class _ScoreWidget extends StatelessWidget {
           )
         ),
         Container(width: 1, height: 15, color: Colors.grey),
-        TextButton(
-          onPressed: () {}, 
-          child: const Row(
-            children: [
-              Icon(Icons.play_arrow),
-              Text('Play Trailer'),
-            ],
-          )
-        )
-
+        trailerKey != null
+          ? TextButton(
+              onPressed: () => Navigator.of(context).pushNamed(
+                MainNavigationRouteNames.movieTrailerWidget, 
+                arguments: trailerKey
+              ), 
+              child: const Row(
+                children: [
+                  Icon(Icons.play_arrow),
+                  Text('Play Trailer'),
+                ],
+              )
+            )
+          : const SizedBox.shrink(),
       ],
     );
   }

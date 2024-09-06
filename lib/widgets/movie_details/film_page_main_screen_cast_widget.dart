@@ -114,7 +114,7 @@ class _ActorListItemWidget extends StatelessWidget {
                       SizedBox(height: 7),
                       Text(
                         actor.character,
-                        maxLines: 3,
+                        maxLines: 2,
                         ),
                     ],
                   ),

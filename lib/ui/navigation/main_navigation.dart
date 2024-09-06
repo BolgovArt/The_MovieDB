@@ -6,11 +6,13 @@ import 'package:vk/widgets/main_screen/main_screen_model.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 import 'package:vk/widgets/movie_details/film_page_widget.dart';
+import 'package:vk/widgets/movie_trailer/movie_trailer_widget.dart';
 
 abstract class MainNavigationRouteNames {
   static const authorization = 'authorization';
   static const mainScreen = '/';
-  static const movieDetails = '/dialog'; //!
+  static const movieDetails = '/movie_details'; //!
+  static const movieTrailerWidget = '/movie_details/trailer'; 
 
 }
 
@@ -39,10 +41,16 @@ class MainNavigation {
             create: () =>  MoviePageModel(movieId), 
             child: const MoviePageWidget(),
           ),
-          );
-        default: 
-          const widget = Text('Navigation error');
-          return MaterialPageRoute(builder: (context) => widget);
+        );
+      case MainNavigationRouteNames.movieTrailerWidget:
+        final arguments = settings.arguments;
+        final youtubeKey = arguments is String ? arguments : '';
+        return MaterialPageRoute(
+          builder: (context) => MovieTrailerWidget(youtubeKey: youtubeKey),
+        );
+      default: 
+        const widget = Text('Navigation error');
+        return MaterialPageRoute(builder: (context) => widget);
     }
   }
 }
