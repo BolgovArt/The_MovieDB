@@ -25,7 +25,7 @@ class FilmPageMainScreenCastWidget extends StatelessWidget {
               ),
               ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 250,
             child: Scrollbar(
               child: _ActorListWidget(),

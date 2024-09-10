@@ -12,6 +12,17 @@ class ApiClientException implements Exception {
   ApiClientException(this.type);
 }
 
+enum MediaType {Movie,TV}
+
+extension MediaTypeAsString on MediaType {
+  String asString() {
+    switch(this) {
+      case MediaType.Movie: return 'movie';
+      case MediaType.TV: return 'tv';
+    }
+  }
+}
+
 class ApiClient {
   static const _apiKey = '7a3703e15f9ef6c0f3397cc7158231bc';
   static const String unsplashUrl = 'api.themoviedb.org';
@@ -50,9 +61,9 @@ class ApiClient {
     } on ApiClientException {
       rethrow;
     } 
-    // catch (_) {
-    //   throw ApiClientException(ApiClientExceptionType.Other);
-    // }
+    catch (e) {
+      throw ApiClientException(ApiClientExceptionType.Other);
+    }
   }
 
   Future<T> _post<T>(
@@ -66,7 +77,9 @@ class ApiClient {
     try {
       final url = Uri.https(unsplashUrl, urlPath, urlParameters);
       final response = await http.post(url,
-          headers: headersParameters, body: bodyParameters);
+        headers: headersParameters, body: bodyParameters
+      );
+ 
       final dynamic json = jsonDecode(response.body);
       _validateResponce(response, json);
       final result = parser(json);
@@ -75,7 +88,7 @@ class ApiClient {
       throw ApiClientException(ApiClientExceptionType.Network);
     } on ApiClientException {
       rethrow;
-    } catch (_) {
+    } catch (e) {
       throw ApiClientException(ApiClientExceptionType.Other);
     }
   }
@@ -92,6 +105,28 @@ class ApiClient {
       '/3/authentication/token/new',
       parser,
       <String, dynamic>{'api_key': _apiKey},
+    );
+    return result;
+  }
+
+
+  Future<int> getAccountInfo(
+  String sessionId,
+  ) async {
+    parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final result = jsonMap['id'] as int;
+      return result;
+    }
+
+    final result = _get(
+      unsplashUrl,
+      '/3/account',
+      parser,
+      <String, dynamic>{
+        'api_key': _apiKey,
+        'session_id': sessionId,
+        },
     );
     return result;
   }
@@ -221,6 +256,67 @@ Future<MovieDetails> movieDetails(
         'language': locale,
         'append_to_response': 'credits,videos',
         },
+    );
+    return result;
+  }
+
+
+Future<bool> isFavorite(
+  int movieId, 
+  String sessionId,
+  ) async {
+    parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final result = jsonMap['favorite'] as bool;
+      return result;
+    }
+
+    final result = _get(
+      unsplashUrl,
+      '/3/movie/$movieId/account_states',
+      parser,
+      <String, dynamic>{
+        'api_key': _apiKey,
+        'session_id': sessionId,
+        },
+    );
+    return result;
+  }
+
+
+  Future<int> markAsFavorite({
+    required int accountId, 
+    required String sessionId, 
+    required MediaType mediaType, 
+    required int mediaId, 
+    required bool isFavorite,
+    }) async {
+    parser(dynamic json) {
+      // final jsonMap = json as Map<String, dynamic>;
+      // final token = jsonMap['request_token'] as String;
+      return 1; // !
+    }
+
+    final headersParameters = {
+      'Content-Type': ContentType.json.mimeType,
+    };
+    final bodyParameters = jsonEncode({
+      "media_type": mediaType.asString(),
+      "media_id": mediaId,
+      "favorite": isFavorite,
+    });
+
+    final result = _post(
+        unsplashUrl,
+        '/3/account/$accountId/favorite',
+        parser,
+        <String, dynamic>{
+          'api_key': _apiKey,
+          'session_id': sessionId,
+          },
+        headersParameters,
+        bodyParameters,
+        
     );
     return result;
   }

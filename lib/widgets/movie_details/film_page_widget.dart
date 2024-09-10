@@ -27,6 +27,7 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final model = NotifierProvider.watch<MoviePageModel>(context);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 138, 187, 206),
       appBar: AppBar( 
@@ -39,7 +40,9 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
         // titleSpacing: 2,
         title: _TitleWidget(),
         actions: [
-        IconButton(onPressed: (){}, icon: const Icon(Icons.favorite, color: Colors.white)),
+          IconButton(
+            onPressed: (){model?.toggleFavorite();}, 
+            icon: Icon(model?.isFavorite == true ? Icons.favorite : Icons.favorite_border_outlined)),
         ],
       ),
       body: const ColoredBox(

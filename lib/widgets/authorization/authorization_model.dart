@@ -35,8 +35,10 @@ class AuthModel extends ChangeNotifier {
     _isAuthProgress = true;
     notifyListeners();
     String? sessionId;
+    int? accountId;
     try {
       sessionId = await _apiClient.auth(username: login, password: password);
+      accountId = await _apiClient.getAccountInfo(sessionId);
       // _isAuthProgress = false;
       // notifyListeners();
     } on ApiClientException catch (e) {
@@ -51,8 +53,9 @@ class AuthModel extends ChangeNotifier {
       }
     }
     _isAuthProgress = false;
-    if (_errorMessage != null || sessionId == null) {
+    if (_errorMessage != null || sessionId == null || accountId == null) {
       // if (_errorMessage != null) {
+      _errorMessage = 'sessionId или accountId = null';
       notifyListeners();
       return;
     }
@@ -62,6 +65,7 @@ class AuthModel extends ChangeNotifier {
     //   return;
     // }
     await _sessionDataProvider.setSessionId(sessionId);
+    await _sessionDataProvider.setAccountId(accountId);
     unawaited(Navigator.of(context)
         .pushReplacementNamed(MainNavigationRouteNames.mainScreen));
   }
