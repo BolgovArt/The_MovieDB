@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 // import 'package:easy_localization/easy_localization.dart';
@@ -6,13 +7,13 @@ import 'package:vk/widgets/app/my_app_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
-  final MyAppModel model;
   static final mainNavigation = MainNavigation();
-  const MyApp({super.key, required this.model});
+  const MyApp({super.key,});
 
 
   @override
   Widget build(BuildContext context) {
+    final model = Provider.read(context);
     return MaterialApp(
 
       localizationsDelegates: const [
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       routes: mainNavigation.routes,
-      initialRoute: mainNavigation.initialRoute(model.isAuth),
+      initialRoute: mainNavigation.initialRoute(model?.isAuth == true),
       onGenerateRoute: mainNavigation.onGenerateRoute,
     );
   }

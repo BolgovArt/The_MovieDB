@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
+import 'package:vk/widgets/app/my_app_model.dart';
 import 'package:vk/widgets/movie_details/film_page_main_info_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_main_screen_cast_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
@@ -14,6 +15,17 @@ class MoviePageWidget extends StatefulWidget {
 }
 
 class _MovieDetailsWidgetState extends State<MoviePageWidget> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    final model = NotifierProvider.read<MoviePageModel>(context);
+    final appModel = Provider.read<MyAppModel>(context);
+    model?.onSessionExpired = () => appModel?.resetSession(context);
+  }
+
+
 
 // через didChangeDependencies в State мы все равно получаем нашу модель. Подписываемся на изменение локали. 
 //Если она меняется, то и внутри модели она тоже автоматически будет меняться

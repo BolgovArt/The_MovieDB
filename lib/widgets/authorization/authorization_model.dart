@@ -44,14 +44,16 @@ class AuthModel extends ChangeNotifier {
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.Network:
-          _errorMessage =
-              'Сервер недоступен. Проверьте подключение к интернету.';
+          _errorMessage = 'Сервер недоступен. Проверьте подключение к интернету.';
         case ApiClientExceptionType.Auth:
           _errorMessage = 'Неверный логин/пароль';
         case ApiClientExceptionType.Other:
           _errorMessage = 'Произошла ошибка, попробуйте ещё раз.';
+        case ApiClientExceptionType.SessionExpired:
+          _errorMessage = 'Ошибка сессии';
       }
     }
+      
     _isAuthProgress = false;
     if (_errorMessage != null || sessionId == null || accountId == null) {
       // if (_errorMessage != null) {
