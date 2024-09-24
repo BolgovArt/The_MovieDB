@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:vk/library/widgets/inherited/provider.dart';
-import 'package:vk/ui/design/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:vk/domain/factories/screen_factory.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
 // import 'package:easy_localization/easy_localization.dart';
-import 'package:vk/generated/locale_keys.g.dart';
+
 import 'package:vk/widgets/authorization/authorization_model.dart';
 
 class AuthorizationWidget extends StatefulWidget {
@@ -120,7 +119,8 @@ class _FormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.read<AuthModel>(context);
+    // final model = NotifierProvider.read<AuthViewModel>(context);
+    final model = context.read<AuthViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,7 +131,7 @@ class _FormWidget extends StatelessWidget {
         ]),
         const _ErrorMessageWidget(),
         TextField(
-          controller: model?.logInTextController,
+          controller: model.logInTextController,
           decoration: 
             const InputDecoration(
               border: OutlineInputBorder(
@@ -150,7 +150,7 @@ class _FormWidget extends StatelessWidget {
 
 
         TextField(
-          controller: model?.passwordTextController,
+          controller: model.passwordTextController,
           decoration: 
             const InputDecoration(
               border: OutlineInputBorder(
@@ -177,9 +177,9 @@ class _AuthButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<AuthModel>(context);
-    final onPressed = model?.canStartAuth == true ? () => model?.authorization(context) : null;
-    final child = model?.isAuthProgress == true ? SizedBox(width: 15, height: 15, child: const CircularProgressIndicator()) : const Text('Login');
+    final model = context.watch<AuthViewModel>();
+    final onPressed = model.canStartAuth ? () => model.authorization(context) : null;
+    final child = model.isAuthProgress == true ? const SizedBox(width: 15, height: 15, child: CircularProgressIndicator()) : const Text('Login');
     return ElevatedButton(
       onPressed: onPressed,
       style: StyleApp.mainBlueButton,
@@ -306,16 +306,16 @@ class _AuthButtonWidget extends StatelessWidget {
 // }
 
 
-
+ 
 class _ErrorMessageWidget extends StatelessWidget {
   const _ErrorMessageWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final errorMessage = NotifierProvider.watch<AuthModel>(context)?.errorMessage;
+    final errorMessage = context.select((AuthViewModel m) => m.errorMessage);
     if (errorMessage == null) return const SizedBox.shrink();
     return Text(
-      errorMessage!,
+      errorMessage,
       style: const TextStyle(
         color: Colors.red, 
         fontSize: 14

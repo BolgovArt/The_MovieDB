@@ -1,16 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:vk/domain/api_client/api_client.dart';
-import 'package:vk/domain/data_providers/session_data_provider.dart';
+import 'package:vk/domain/services/auth_service.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 
-class AuthModel extends ChangeNotifier {
-  final _apiClient = ApiClient();
-  final _sessionDataProvider = SessionDataProvider();
-
-  // final logInTextController = TextEditingController(text: 'admin');
-  // final passwordTextController = TextEditingController(text: 'admin');
+class AuthViewModel extends ChangeNotifier {
+  final _authService = AuthService();
 
   final logInTextController = TextEditingController();
   final passwordTextController = TextEditingController();
@@ -19,6 +14,29 @@ class AuthModel extends ChangeNotifier {
   bool get canStartAuth => !_isAuthProgress;
   bool get isAuthProgress => _isAuthProgress;
 
+  bool _isValid(String login, String password) => 
+    login.isNotEmpty || password.isNotEmpty;
+
+  Future<String?> _login(String login, String password) async {
+    try {
+      _authService.login(login, password);
+    } on ApiClientException catch (e) {
+      switch (e.type) {
+        case ApiClientExceptionType.Network:
+          return 'Сервер недоступен. Проверьте подключение к интернету.';
+        case ApiClientExceptionType.Auth:
+          return 'Неверный логин/пароль';
+        case ApiClientExceptionType.Other:
+          return 'Произошла ошибка, попробуйте ещё раз.';
+        case ApiClientExceptionType.SessionExpired:
+          return 'Ошибка сессии';
+      }
+    } catch (e) {
+      return 'sessionId или accountId = null';
+    }
+    return null;
+  }
+
   String? _errorMessage = null;
   String? get errorMessage => _errorMessage;
 
@@ -26,49 +44,34 @@ class AuthModel extends ChangeNotifier {
     final login = logInTextController.text;
     final password = passwordTextController.text;
 
-    if (login.isEmpty || password.isEmpty) {
+    if (!_isValid(login, password)) {
       _errorMessage = 'Заполните логин и пароль';
       notifyListeners();
       return;
     }
-    _errorMessage = null;
-    _isAuthProgress = true;
-    notifyListeners();
-    String? sessionId;
-    int? accountId;
-    try {
-      sessionId = await _apiClient.auth(username: login, password: password);
-      accountId = await _apiClient.getAccountInfo(sessionId);
-      // _isAuthProgress = false;
-      // notifyListeners();
-    } on ApiClientException catch (e) {
-      switch (e.type) {
-        case ApiClientExceptionType.Network:
-          _errorMessage = 'Сервер недоступен. Проверьте подключение к интернету.';
-        case ApiClientExceptionType.Auth:
-          _errorMessage = 'Неверный логин/пароль';
-        case ApiClientExceptionType.Other:
-          _errorMessage = 'Произошла ошибка, попробуйте ещё раз.';
-        case ApiClientExceptionType.SessionExpired:
-          _errorMessage = 'Ошибка сессии';
-      }
-    }
+
+    _updateState(null, true);
+    // _errorMessage = null;
+    // _isAuthProgress = true;
+    // notifyListeners();
+
+    _errorMessage = await _login(login, password);
       
-    _isAuthProgress = false;
-    if (_errorMessage != null || sessionId == null || accountId == null) {
-      // if (_errorMessage != null) {
-      _errorMessage = 'sessionId или accountId = null';
-      notifyListeners();
+    // _isAuthProgress = false;
+
+    if (_errorMessage != null) {
+      _updateState(_errorMessage, false);
+    }
+    MainNavigation.resetNavigation(context);
+  }
+
+
+  void _updateState(String? errorMessage, bool isAuthProgress) {
+    if (_errorMessage == errorMessage && _isAuthProgress == isAuthProgress) {
       return;
     }
-    // if (sessionId == null) {
-    //   _errorMessage = 'че-то с серверной частью беда';
-    //   notifyListeners();
-    //   return;
-    // }
-    await _sessionDataProvider.setSessionId(sessionId);
-    await _sessionDataProvider.setAccountId(accountId);
-    unawaited(Navigator.of(context)
-        .pushReplacementNamed(MainNavigationRouteNames.mainScreen));
+    _errorMessage = errorMessage;
+    _isAuthProgress = isAuthProgress;
+    notifyListeners();
   }
 }
