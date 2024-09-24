@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vk/domain/api_client/api_client.dart';
+import 'package:vk/domain/api_client/movie_api_client.dart';
+import 'package:vk/domain/api_client/image_downloader.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 
@@ -98,7 +99,7 @@ class _ActorListItemWidget extends StatelessWidget {
           child: Column(
             children: [
               profilePath != null 
-              ? Image.network(ApiClient.imageUrl(profilePath),fit: BoxFit.cover, height: 140, width: 120,)
+              ? Image.network(ImageDownloader.imageUrl(profilePath),fit: BoxFit.cover, height: 140, width: 120,)
               : const SizedBox.shrink(),
               Expanded(
                 child: Padding(

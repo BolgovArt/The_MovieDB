@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:vk/domain/api_client/api_client.dart';
+import 'package:vk/domain/api_client/movie_api_client.dart';
+import 'package:vk/domain/api_client/image_downloader.dart';
 import 'package:vk/domain/entity/movie_details_credits.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
@@ -74,13 +75,13 @@ class _TopPosterWidget extends StatelessWidget {
       child: Stack(
         children: [
           backdropPath != null 
-          ? Image.network(ApiClient.imageUrl(backdropPath)) 
+          ? Image.network(ImageDownloader.imageUrl(backdropPath)) 
           : const SizedBox.shrink(),
           Positioned(
             top: 20,
             left: 20,
             child: posterPath != null 
-              ? Image.network(ApiClient.imageUrl(posterPath), scale: 4,) 
+              ? Image.network(ImageDownloader.imageUrl(posterPath), scale: 4,) 
               : const SizedBox.shrink(),
             ),
         ],
@@ -220,7 +221,7 @@ class _SummeryWidget extends StatelessWidget {
           texts.join(' '),
           maxLines: 3, 
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -237,7 +238,7 @@ class _OverViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return const Text(
             'Overview',
             style: TextStyle(
               color: Colors.white,

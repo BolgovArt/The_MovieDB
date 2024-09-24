@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vk/domain/api_client/api_client.dart';
+import 'package:vk/domain/api_client/movie_api_client.dart';
+import 'package:vk/domain/api_client/image_downloader.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/ui/design/style.dart';
 import 'package:vk/widgets/movie_list/movie_list_model.dart';
@@ -33,7 +34,7 @@ class MovieListWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Row(
                         children: [
-                          posterPath != null ? Image.network(ApiClient.imageUrl(posterPath), width: 95,) : SizedBox.shrink(),
+                          posterPath != null ? Image.network(ImageDownloader.imageUrl(posterPath), width: 95,) : SizedBox.shrink(),
                           const SizedBox(width: 15),
                           Expanded(
                             child: Column(

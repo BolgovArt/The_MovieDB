@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vk/domain/api_client/api_client.dart';
+import 'package:vk/domain/api_client/movie_api_client.dart';
 import 'package:vk/domain/entity/movie.dart';
 import 'package:vk/domain/entity/popular_movie_responce.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 
 class MovieListModel extends ChangeNotifier{
-  final _apiClient = ApiClient();
+  final _movieApiClient = MovieApiClient();
   final _movies = <Movie>[];
   late int _currentPage;
   late int _totalPage;
@@ -42,9 +42,9 @@ class MovieListModel extends ChangeNotifier{
   Future<PopularMovieResponce> _loadFilms(int nextPage, String locale) async {
     final query = _searchQuery;
     if (query == null) {
-      return await _apiClient.popularFilms(nextPage, _locale);
+      return await _movieApiClient.popularFilms(nextPage, _locale);
     } else {
-      return await _apiClient.searchFilms(nextPage, _locale, query);
+      return await _movieApiClient.searchFilms(nextPage, _locale, query);
     }
   }
   
