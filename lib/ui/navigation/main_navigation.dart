@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:vk/domain/factories/screen_factory.dart';
 import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/widgets/authorization/authorization_model.dart';
 import 'package:vk/widgets/authorization/authorization_widget.dart';
+import 'package:vk/widgets/loader_widget/loader_widget.dart';
 import 'package:vk/widgets/main_screen/main_screen_model.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
@@ -9,18 +11,21 @@ import 'package:vk/widgets/movie_details/film_page_widget.dart';
 import 'package:vk/widgets/movie_trailer/movie_trailer_widget.dart';
 
 abstract class MainNavigationRouteNames {
+  static const loaderWidget = '/';
   static const authorization = 'authorization';
-  static const mainScreen = '/';
-  static const movieDetails = '/movie_details'; //!
+  static const mainScreen = '/main_screen';
+  static const movieDetails = '/movie_details'; 
   static const movieTrailerWidget = '/movie_details/trailer'; 
+  
 
 }
 
 
 class MainNavigation {
-  String initialRoute(bool isAuthProgress) => isAuthProgress ? MainNavigationRouteNames.mainScreen : MainNavigationRouteNames.authorization;
+  static final _screenFactory = ScreenFactory();
   final routes = <String, WidgetBuilder>{
-    MainNavigationRouteNames.authorization: (context) => NotifierProvider(
+    MainNavigationRouteNames.loaderWidget: (_) => _screenFactory.makeLoader(),
+    MainNavigationRouteNames.authorization: (_) => NotifierProvider(
       create: () => AuthModel(), 
       child: const AuthorizationWidget()
     ),

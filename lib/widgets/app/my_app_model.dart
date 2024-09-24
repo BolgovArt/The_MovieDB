@@ -19,4 +19,5 @@ class MyAppModel {
     await _sessionDataProvider.setAccountId(null);
     await Navigator.of(context).pushNamedAndRemoveUntil(MainNavigationRouteNames.authorization, (route) => false);
   }
+
 }
