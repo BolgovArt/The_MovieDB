@@ -9,6 +9,8 @@ import 'package:vk/widgets/main_screen/main_screen_model.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 import 'package:vk/widgets/movie_details/film_page_widget.dart';
+import 'package:vk/widgets/movie_list/movie_list_model.dart';
+import 'package:vk/widgets/movie_list/movies_list_widget.dart';
 import 'package:vk/widgets/movie_trailer/movie_trailer_widget.dart';
 
 class ScreenFactory {
@@ -29,10 +31,7 @@ class ScreenFactory {
   }
   
   Widget makeMainScreenWidget() {
-    return old_provider.NotifierProvider(
-      create: () => MainScreenModel(), 
-      child: const MainScreenWidget()
-    );
+    return MainScreenWidget();
   }
 
   Widget moviePageWidget(int movieId) {
@@ -45,5 +44,20 @@ class ScreenFactory {
 
   Widget makeMovieTrailerWidget(youtubeKey) {
     return MovieTrailerWidget(youtubeKey: youtubeKey);
+  }
+
+  Widget makeNewsList() {
+    return const NewsWidget();
+  }
+
+  Widget makeMovieList() {
+    return ChangeNotifierProvider(
+      create: (_) => MovieListModel(), 
+      child:  const MovieListWidget()
+    );
+  }
+
+  Widget makeTVShowListWidget() {
+    return const TVShowListWidget();
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:vk/domain/data_providers/session_data_provider.dart';
-import 'package:vk/library/widgets/inherited/provider.dart';
+import 'package:vk/domain/factories/screen_factory.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
 import 'package:vk/widgets/movie_list/movie_list_model.dart';
-import 'package:vk/widgets/movie_list/movies_list_widget.dart';
 
 
 
@@ -19,10 +19,10 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
-  final movieListModel = MovieListModel();
+  // final movieListModel = MovieListModel();
+  int _currentTabIndex = 1;
+  final _screenFactory = ScreenFactory();
 
-
-int _currentTabIndex = 1;
   void onSelectTab(int index) {
     if (_currentTabIndex == index) return; // не будем обновлять state, если вкладка уже выбрана
     setState(() {
@@ -36,13 +36,11 @@ int _currentTabIndex = 1;
 
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    movieListModel.setupLocale(context);
-    
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   MovieListModel.setupLocale(context);
+  // }
 
 
   static final List<Widget> _titleOptions = <Widget> [
@@ -76,13 +74,9 @@ int _currentTabIndex = 1;
         child: IndexedStack(
           index: _currentTabIndex,
           children: [
-            const Text('1'),
-            NotifierProvider(
-              create:() => movieListModel, // теперь у NotifierProvider появился dispose, но здесь он не нужен. в provider.dart добавляем final isManagingModel
-              isManagingModel: false,
-              child: const MovieListWidget()
-            ),
-            const Text('3'),
+            _screenFactory.makeNewsList(),
+            _screenFactory.makeMovieList(),
+            _screenFactory.makeTVShowListWidget(),
           ]
           ),
       ),
@@ -96,5 +90,24 @@ int _currentTabIndex = 1;
         ]
       ),
     );
+  }
+}
+
+
+class NewsWidget extends StatelessWidget {
+  const NewsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('1');
+  }
+}
+
+class TVShowListWidget extends StatelessWidget {
+  const TVShowListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('3');
   }
 }

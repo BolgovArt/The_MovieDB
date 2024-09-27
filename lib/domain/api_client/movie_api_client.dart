@@ -7,7 +7,7 @@ import 'package:vk/domain/entity/popular_movie_responce.dart';
 class MovieApiClient {
   final _networkClient = NetworkClient();
 
-  Future<PopularMovieResponce> popularFilms(int page, String locale) async {
+  Future<PopularMovieResponce> popularFilms(int page, String locale, String apiKey, String unsplashUrl) async {
     parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final response = PopularMovieResponce.fromJson(jsonMap);
@@ -15,11 +15,11 @@ class MovieApiClient {
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      unsplashUrl,
       '/3/movie/popular',
       parser,
       <String, dynamic>{
-        'api_key': Configutarion.apiKey,
+        'api_key': apiKey,
         'page': page.toString(),
         'language': locale,
         },
@@ -28,7 +28,7 @@ class MovieApiClient {
   }
 
 
-  Future<PopularMovieResponce> searchFilms(int page, String locale, String query) async {
+  Future<PopularMovieResponce> searchFilms(int page, String locale, String query, String apiKey, String unsplashUrl) async {
     parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final response = PopularMovieResponce.fromJson(jsonMap);
@@ -36,11 +36,11 @@ class MovieApiClient {
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      unsplashUrl,
       '/3/search/movie',
       parser,
       <String, dynamic>{
-        'api_key': Configutarion.apiKey,
+        'api_key': apiKey,
         'page': page.toString(),
         'language': locale,
         'query': query,
