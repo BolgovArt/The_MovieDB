@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vk/library/widgets/inherited/provider.dart';
-import 'package:vk/widgets/app/my_app_model.dart';
+import 'package:provider/provider.dart';
 import 'package:vk/widgets/movie_details/film_page_main_info_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_main_screen_cast_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
@@ -17,13 +16,13 @@ class MoviePageWidget extends StatefulWidget {
 class _MovieDetailsWidgetState extends State<MoviePageWidget> {
 
 
-  @override
-  void initState() {
-    super.initState();
-    final model = NotifierProvider.read<MoviePageModel>(context);
-    final appModel = Provider.read<MyAppModel>(context);
-    model?.onSessionExpired = () => appModel?.resetSession(context);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final model = NotifierProvider.read<MoviePageModel>(context);
+  //   final appModel = Provider.read<MyAppModel>(context);
+  //   model?.onSessionExpired = () => appModel?.resetSession(context);
+  // }
 
 
 
@@ -34,12 +33,13 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    NotifierProvider.read<MoviePageModel>(context)?.setupLocale(context);
+    context.read<MoviePageModel>().setupLocale(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MoviePageModel>(context);
+    final model = context.watch<MoviePageModel>();
+    // final model = NotifierProvider.watch<MoviePageModel>(context);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 138, 187, 206),
       appBar: AppBar( 
@@ -53,8 +53,8 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
         title: _TitleWidget(),
         actions: [
           IconButton(
-            onPressed: (){model?.toggleFavorite();}, 
-            icon: Icon(model?.isFavorite == true ? Icons.favorite : Icons.favorite_border_outlined)),
+            onPressed: (){model.toggleFavorite(context);}, 
+            icon: Icon(model.isFavorite == true ? Icons.favorite : Icons.favorite_border_outlined)),
         ],
       ),
       body: const ColoredBox(
@@ -74,8 +74,9 @@ class _TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MoviePageModel>(context);
-    return Text(model?.movieDetails?.title ?? 'Загрузка..', style: TextStyle(color: Colors.white),);
+    // final model = NotifierProvider.watch<MoviePageModel>(context);
+    final title = context.select((MoviePageModel model) => model.movieDetails?.title);
+    return Text(title ?? 'Загрузка..', style: TextStyle(color: Colors.white),);
   }
 }
 
@@ -85,8 +86,9 @@ class _BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MoviePageModel>(context);
-    final movieDetails = model?.movieDetails;
+    final movieDetails = context.select((MoviePageModel model) => model.movieDetails);
+    // final model = NotifierProvider.watch<MoviePageModel>(context);
+    // final movieDetails = model?.movieDetails;
     if (movieDetails == null) {
       return const Center(
         child: CircularProgressIndicator()

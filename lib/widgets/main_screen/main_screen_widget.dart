@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:vk/domain/data_providers/session_data_provider.dart';
 import 'package:vk/domain/factories/screen_factory.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
-import 'package:vk/widgets/movie_list/movie_list_model.dart';
 
 
 
@@ -51,6 +48,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // final _authService = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: _titleOptions[_currentTabIndex],
@@ -60,7 +58,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           child: Row(
             children: [
               IconButton(
-                onPressed: () => SessionDataProvider().setSessionId(null),
+                onPressed: () => {
+                  // _authService.logout()
+                },
                 icon: Icon(Icons.logout_rounded)
                 ),
               Text('Выход из \nаккаунта'),
