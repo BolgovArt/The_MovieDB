@@ -33,12 +33,17 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<MoviePageModel>().setupLocale(context);
+    // context.read<MoviePageModel>().setupLocale(context);
+
+    Future.microtask(
+      () => context.read<MoviePageModel>().setupLocale(context),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<MoviePageModel>();
+    final model = context.read<MoviePageModel>();
+    final posterData = context.select((MoviePageModel model) => model.data.posterData);
     // final model = NotifierProvider.watch<MoviePageModel>(context);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 138, 187, 206),
@@ -54,7 +59,8 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
         actions: [
           IconButton(
             onPressed: (){model.toggleFavorite(context);}, 
-            icon: Icon(model.isFavorite == true ? Icons.favorite : Icons.favorite_border_outlined)),
+            icon: Icon(posterData.favoriteIcon)
+          ),
         ],
       ),
       body: const ColoredBox(
@@ -75,8 +81,8 @@ class _TitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final model = NotifierProvider.watch<MoviePageModel>(context);
-    final title = context.select((MoviePageModel model) => model.movieDetails?.title);
-    return Text(title ?? 'Загрузка..', style: TextStyle(color: Colors.white),);
+    final title = context.select((MoviePageModel model) => model.data.title);
+    return Text(title, style: TextStyle(color: Colors.white),);
   }
 }
 
@@ -86,10 +92,10 @@ class _BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movieDetails = context.select((MoviePageModel model) => model.movieDetails);
+    final isLoading = context.select((MoviePageModel model) => model.data.isLoading);
     // final model = NotifierProvider.watch<MoviePageModel>(context);
     // final movieDetails = model?.movieDetails;
-    if (movieDetails == null) {
+    if (isLoading) {
       return const Center(
         child: CircularProgressIndicator()
         );

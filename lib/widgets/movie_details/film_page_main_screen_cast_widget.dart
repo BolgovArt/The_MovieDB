@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vk/domain/api_client/movie_api_client.dart';
+import 'package:provider/provider.dart';
 import 'package:vk/domain/api_client/image_downloader.dart';
-import 'package:vk/library/widgets/inherited/provider.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 
 
@@ -36,7 +35,7 @@ class FilmPageMainScreenCastWidget extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: TextButton(
               onPressed: () {},
-              child: Text('data')
+              child: const Text('data')
               ),
           ),
         ],
@@ -52,11 +51,12 @@ class _ActorListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MoviePageModel>(context);
-    var cast = model?.movieDetails?.credits.cast;
-    if (cast == null || cast.isEmpty) return const SizedBox.shrink();
+    var actorData = context.select((MoviePageModel model) => model.data.actorData);
+    // final model = NotifierProvider.watch<MoviePageModel>(context);
+    // var cast = model?.movieDetails?.credits.cast;
+    if (actorData.isEmpty) return const SizedBox.shrink();
     return ListView.builder(
-      itemCount: 20,
+      itemCount: actorData.length,
       itemExtent: 120, 
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
@@ -75,8 +75,8 @@ class _ActorListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.read<MoviePageModel>(context);
-    final actor = model!.movieDetails!.credits.cast[actorIndex];
+    final model = context.read<MoviePageModel>();
+    final actor = model.data.actorData[actorIndex];
     final profilePath = actor.profilePath;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -98,9 +98,8 @@ class _ActorListItemWidget extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: Column(
             children: [
-              profilePath != null 
-              ? Image.network(ImageDownloader.imageUrl(profilePath),fit: BoxFit.cover, height: 140, width: 120,)
-              : const SizedBox.shrink(),
+              if (profilePath != null) 
+                Image.network(ImageDownloader.imageUrl(profilePath),fit: BoxFit.cover, height: 140, width: 120,),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
