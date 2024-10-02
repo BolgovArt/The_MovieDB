@@ -35,8 +35,9 @@ class _MovieDetailsWidgetState extends State<MoviePageWidget> {
     super.didChangeDependencies();
     // context.read<MoviePageModel>().setupLocale(context);
 
+    final locale = Localizations.localeOf(context);
     Future.microtask(
-      () => context.read<MoviePageModel>().setupLocale(context),
+      () => context.read<MoviePageModel>().setupLocale(context, locale),
     );
   }
 

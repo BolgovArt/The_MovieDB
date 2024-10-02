@@ -17,7 +17,12 @@ class _MovieListWidgetState extends State<MovieListWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<MovieListModel>().setupLocale(context);
+    final locale = Localizations.localeOf(context);
+    context.read<MovieListModel>().setupLocale(locale);
+    // context.read<MovieListModel>().setupLocale(context);
+    // Future.microtask(
+    //   () => context.read<MovieListModel>().setupLocale(locale),
+    // );
   }
 
   
@@ -123,7 +128,7 @@ class _MovieListRowWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Row(
                     children: [
-                      posterPath != null ? Image.network(ImageDownloader.imageUrl(posterPath), width: 95,) : SizedBox.shrink(),
+                      Image.network(ImageDownloader.imageUrl(posterPath), width: 95,),
                       const SizedBox(width: 15),
                       Expanded(
                         child: Column(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk/domain/entity/movie.dart';
 import 'package:vk/domain/services/movie_service.dart';
+import 'package:vk/library/widgets/inherited/localized_model.dart';
 import 'package:vk/library/widgets/paginator.dart.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 
@@ -26,7 +27,8 @@ class MovieListModel extends ChangeNotifier{
   late final Paginator<Movie> _popularMoviePaginator;
   late final Paginator<Movie> _searchMoviePaginator;
 
-  String _locale = '';
+  // String _locale = '';
+  final _localeStorage = LocalizedModelStorage();
   Timer? searchDebounce; 
 
   var _movies = <MovieListRowData>[];
@@ -41,11 +43,11 @@ class MovieListModel extends ChangeNotifier{
 
   MovieListModel() {
     _popularMoviePaginator = Paginator<Movie>((page) async {
-      final result = await _movieService.popularFilms(page, _locale);
+      final result = await _movieService.popularFilms(page, _localeStorage.localeTag);
       return PaginatorLoadResult(data: result.movies, currentPage: result.page, totalPage: result.totalPages);
     });
     _searchMoviePaginator = Paginator<Movie>((page) async {
-      final result = await _movieService.searchFilms(page, _locale, _searchQuery ?? '');
+      final result = await _movieService.searchFilms(page, _localeStorage.localeTag, _searchQuery ?? '');
       return PaginatorLoadResult(data: result.movies, currentPage: result.page, totalPage: result.totalPages);
     });
   }
@@ -64,12 +66,12 @@ class MovieListModel extends ChangeNotifier{
   }
 
 
-  void setupLocale(BuildContext context) async {
-    final locale = Localizations.localeOf(context).toLanguageTag();
-    print(locale); // Должена быть Ru. В видосе только на Ihone установил ru, Android потом сказал
-    if (_locale == locale) return; 
-    _locale = locale;
-    _dateFormat = DateFormat.yMMMMd(locale);
+  void setupLocale(Locale locale) async {
+    // final locale = Localizations.localeOf(context).toLanguageTag();
+    // print(locale); // Должена быть Ru. В видосе только на Ihone установил ru, Android потом сказал
+    if (!_localeStorage.updateLocale(locale)) return;
+
+    _dateFormat = DateFormat.yMMMMd(_localeStorage.localeTag);
     await _resetList();
 
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vk/domain/api_client/image_downloader.dart';
-import 'package:vk/domain/entity/movie_details_credits.dart';
 import 'package:vk/ui/navigation/main_navigation.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 
