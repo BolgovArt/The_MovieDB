@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:vk/domain/factories/screen_factory.dart';
+import 'package:vk/domain/services/auth_service.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
@@ -48,7 +49,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final _authService = AuthService();
+    final _authService = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: _titleOptions[_currentTabIndex],
@@ -59,7 +60,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             children: [
               IconButton(
                 onPressed: () => {
-                  // _authService.logout()
+                  _authService.logout()
                 },
                 icon: Icon(Icons.logout_rounded)
                 ),

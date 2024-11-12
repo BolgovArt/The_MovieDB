@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:vk/configuration/configutarion.dart';
+import 'package:vk/configuration/configuration.dart';
 import 'package:vk/domain/api_client/network_client.dart';
 
 enum MediaType { movie, tv }
@@ -26,11 +26,11 @@ class AccountApiClient {
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      Configuration.unsplashUrl,
       '/3/account',
       parser,
       <String, dynamic>{
-        'api_key': Configutarion.apiKey,
+        'api_key': Configuration.apiKey,
         'session_id': sessionId,
         },
     );
@@ -60,11 +60,11 @@ class AccountApiClient {
     });
 
     final result = _networkClient.post(
-        Configutarion.unsplashUrl,
+        Configuration.unsplashUrl,
         '/3/account/$accountId/favorite',
         parser,
         <String, dynamic>{
-          'api_key': Configutarion.apiKey,
+          'api_key': Configuration.apiKey,
           'session_id': sessionId,
           },
         headersParameters,

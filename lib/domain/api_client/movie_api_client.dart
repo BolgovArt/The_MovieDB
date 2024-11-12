@@ -1,4 +1,4 @@
-import 'package:vk/configuration/configutarion.dart';
+import 'package:vk/configuration/configuration.dart';
 import 'package:vk/domain/api_client/network_client.dart';
 import 'package:vk/domain/entity/movie_details.dart';
 import 'package:vk/domain/entity/popular_movie_responce.dart';
@@ -62,11 +62,11 @@ Future<MovieDetails> movieDetails(
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      Configuration.unsplashUrl,
       '/3/movie/$movieId',
       parser,
       <String, dynamic>{
-        'api_key': Configutarion.apiKey,
+        'api_key': Configuration.apiKey,
         'language': locale,
         'append_to_response': 'credits,videos',
         },
@@ -86,11 +86,11 @@ Future<bool> isFavorite(
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      Configuration.unsplashUrl,
       '/3/movie/$movieId/account_states',
       parser,
       <String, dynamic>{
-        'api_key': Configutarion.apiKey,
+        'api_key': Configuration.apiKey,
         'session_id': sessionId,
         },
     );

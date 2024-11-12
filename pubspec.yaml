@@ -21,6 +21,9 @@ dependencies:
   flutter_localization: ^0.2.2
   youtube_player_flutter: ^8.1.2
   provider: ^6.1.2
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  bloc_concurrency: ^0.2.5
 
 dev_dependencies:
   flutter_test:

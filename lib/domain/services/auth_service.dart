@@ -2,6 +2,7 @@ import 'package:vk/domain/api_client/account_api_client.dart';
 import 'package:vk/domain/api_client/auth_api_client.dart';
 import 'package:vk/domain/data_providers/session_data_provider.dart';
 
+
 class AuthService {
   final _authApiClient = AuthApiClient();
   final _accountApiClient = AccountApiClient();
@@ -16,7 +17,7 @@ class AuthService {
 
 
   Future<void> login(String login, String password) async {
-    final sessionId = await _authApiClient.auth(
+      final sessionId = await _authApiClient.auth(
       username: login, 
       password: password
     );

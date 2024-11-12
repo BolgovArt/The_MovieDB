@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vk/domain/api_client/image_downloader.dart';
 import 'package:vk/ui/design/style.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
+import 'package:vk/widgets/movie_list/movie_list_cubit.dart';
 import 'package:vk/widgets/movie_list/movie_list_model.dart';
 
 
@@ -18,7 +20,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final locale = Localizations.localeOf(context);
-    context.read<MovieListModel>().setupLocale(locale);
+    context.read<MovieListCubit>().setupLocale(locale.languageCode);
     // context.read<MovieListModel>().setupLocale(context);
     // Future.microtask(
     //   () => context.read<MovieListModel>().setupLocale(locale),
@@ -46,13 +48,13 @@ class _SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MovieListModel>();
+    final cubit = context.read<MovieListCubit>();
     return Container(
       color: Colors.white,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16,),
         child: TextField(
-          onChanged: model.searchFilms,
+          onChanged: cubit.searchFilms,
           decoration: InputDecoration(
             filled: true,
             fillColor: Color.fromARGB(235, 220, 223, 226),
@@ -92,14 +94,14 @@ class _MovieListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<MovieListModel>();
+    final cubit = context.watch<MovieListCubit>();
     return ListView.separated(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           separatorBuilder: (context, index) {return Container(height: 20,);},
           padding: const EdgeInsets.only(top: 45),
-          itemCount: model.movies.length,
+          itemCount: cubit.state.movies.length,
           itemBuilder: (BuildContext context, int index){
-            model.showFilmAtIndex(index);
+            cubit.showFilmAtIndex(index);
             return _MovieListRowWidget(index: index,);
           },       
         );
@@ -115,14 +117,14 @@ class _MovieListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MovieListModel>();
-    final item = model.movies[index];
+    final cubit = context.read<MovieListCubit>();
+    final item = cubit.state.movies[index];
             final posterPath = item.posterPath;
             return 
             Material(
               color: Colors.white,
               child: InkWell(
-                    onTap: () => model.onFilmTap(context, index),
+                    onTap: () => _onFilmTap(context, item.id),
                     child:
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -172,5 +174,12 @@ class _MovieListRowWidget extends StatelessWidget {
                 
               ),
             );
+  }
+
+  void _onFilmTap(BuildContext context, int movieId) {
+    Navigator.of(context).pushNamed(
+      MainNavigationRouteNames.movieDetails,
+      arguments: movieId
+    );
   }
 }
