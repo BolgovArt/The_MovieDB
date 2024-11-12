@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:vk/configuration/configutarion.dart';
+import 'package:vk/configuration/configuration.dart';
 import 'package:vk/domain/api_client/network_client.dart';
 
 
@@ -30,10 +30,10 @@ class AuthApiClient {
     }
 
     final result = _networkClient.get(
-      Configutarion.unsplashUrl,
+      Configuration.unsplashUrl,
       '/3/authentication/token/new',
       parser,
-      <String, dynamic>{'api_key': Configutarion.apiKey},
+      <String, dynamic>{'api_key': Configuration.apiKey},
     );
     return result;
   }
@@ -58,10 +58,10 @@ class AuthApiClient {
     });
 
     final result = _networkClient.post(
-        Configutarion.unsplashUrl,
+        Configuration.unsplashUrl,
         '/3/authentication/token/validate_with_login',
         parser,
-        {'api_key': Configutarion.apiKey},
+        {'api_key': Configuration.apiKey},
         headersParameters,
         bodyParameters);
     return result;
@@ -82,10 +82,10 @@ class AuthApiClient {
     });
 
     final result = _networkClient.post(
-        Configutarion.unsplashUrl,
+        Configuration.unsplashUrl,
         '/3/authentication/session/new',
         parser,
-        {'api_key': Configutarion.apiKey},
+        {'api_key': Configuration.apiKey},
         headersParameters,
         bodyParameters);
     return result;

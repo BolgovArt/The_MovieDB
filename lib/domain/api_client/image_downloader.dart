@@ -1,5 +1,5 @@
-import 'package:vk/configuration/configutarion.dart';
+import 'package:vk/configuration/configuration.dart';
 
 class ImageDownloader {
-  static String imageUrl(String path) => Configutarion.imageUrl + path;
+  static String imageUrl(String path) => Configuration.imageUrl + path;
 }
