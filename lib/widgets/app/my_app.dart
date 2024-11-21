@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vk/ui/design/colors.dart';
-import 'package:vk/ui/navigation/main_navigation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vk/ui/navigation/main_navigation_route_names.dart';
+
+abstract class MyAppNavigation {
+  Map<String, Widget Function(BuildContext)> get routes;
+  Route<Object> onGenerateRoute(RouteSettings settings);
+}
 
 class MyApp extends StatelessWidget {
-  static final mainNavigation = MainNavigation();
-  const MyApp({super.key,});
+  final MyAppNavigation navigation;
+  const MyApp({super.key, required this.navigation,});
 
 
   @override
@@ -32,9 +37,11 @@ class MyApp extends StatelessWidget {
           unselectedItemColor: Colors.grey,
         )
       ),
-      routes: mainNavigation.routes,
+      routes: navigation.routes,
       initialRoute: MainNavigationRouteNames.loaderWidget,
-      onGenerateRoute: mainNavigation.onGenerateRoute,
+      onGenerateRoute: navigation.onGenerateRoute,
     );
   }
 }
+
+// Изменения: MainNavigation приходит извне, внутри этого файла не создается экземпляр класса MainNavigation.

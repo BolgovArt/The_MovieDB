@@ -1,12 +1,17 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:vk/domain/api_client/movie_api_client.dart';
 import 'package:vk/domain/api_client/api_client_exception.dart';
-import 'package:vk/domain/services/auth_service.dart';
-import 'package:vk/ui/navigation/main_navigation.dart';
+import 'package:vk/ui/navigation/main_navigation_actions.dart';
+
+abstract class AuthViewModelLoginProvider {
+  Future<void> login(String login, String password);
+}
 
 class AuthViewModel extends ChangeNotifier {
-  final _authService = AuthService();
+  final MainNavigationActions mainNavigationActions;
+  final AuthViewModelLoginProvider loginProvider;
+
 
   final logInTextController = TextEditingController();
   final passwordTextController = TextEditingController();
@@ -20,7 +25,7 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<String?> _login(String login, String password) async {
     try {
-      _authService.login(login, password);
+      loginProvider.login(login, password);
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.network:
@@ -39,6 +44,11 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   String? _errorMessage = null;
+
+  AuthViewModel({
+    required this.mainNavigationActions,
+    required this.loginProvider,
+  });
   String? get errorMessage => _errorMessage;
 
   Future<void> authorization(BuildContext context) async {
@@ -63,7 +73,7 @@ class AuthViewModel extends ChangeNotifier {
     if (_errorMessage != null) {
       _updateState(_errorMessage, false);
     }
-    MainNavigation.resetNavigation(context);
+    mainNavigationActions.resetNavigation(context);
   }
 
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:vk/configuration/configutarion.dart';
 import 'package:vk/domain/api_client/network_client.dart';
 
@@ -14,8 +15,26 @@ extension MediaTypeAsString on MediaType {
   }
 }
 
-class AccountApiClient {
-  final _networkClient = NetworkClient();
+abstract class AccountApiClient {
+  Future<int> getAccountInfo(
+  String sessionId,
+  );
+  Future<int> markAsFavorite({
+    required int accountId, 
+    required String sessionId, 
+    required MediaType mediaType, 
+    required int mediaId, 
+    required bool isFavorite,
+    });
+}
+
+class AccountApiClientDefault implements AccountApiClient {
+  final NetworkClient networkClient;
+  const AccountApiClientDefault({
+    required this.networkClient,
+  });
+
+  @override
   Future<int> getAccountInfo(
   String sessionId,
   ) async {
@@ -25,7 +44,7 @@ class AccountApiClient {
       return result;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       Configutarion.unsplashUrl,
       '/3/account',
       parser,
@@ -37,7 +56,8 @@ class AccountApiClient {
     return result;
   }
 
-    Future<int> markAsFavorite({
+    @override
+      Future<int> markAsFavorite({
     required int accountId, 
     required String sessionId, 
     required MediaType mediaType, 
@@ -59,7 +79,7 @@ class AccountApiClient {
       "favorite": isFavorite,
     });
 
-    final result = _networkClient.post(
+    final result = networkClient.post(
         Configutarion.unsplashUrl,
         '/3/account/$accountId/favorite',
         parser,

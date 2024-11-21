@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vk/widgets/app/my_app.dart';
+import 'package:vk/di/di_container.dart';
+
+abstract class AppFactory {
+  Widget makeApp();
+}
+
+final appFactory = makeAppFactory();
 
 void main()  { 
-  const app = MyApp();
+  final app = appFactory.makeApp();
   runApp(app);
 }

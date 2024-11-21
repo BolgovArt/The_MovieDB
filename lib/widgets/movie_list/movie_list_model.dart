@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk/domain/entity/movie.dart';
-import 'package:vk/domain/services/movie_service.dart';
+import 'package:vk/domain/entity/popular_movie_responce.dart';
 import 'package:vk/library/widgets/inherited/localized_model.dart';
 import 'package:vk/library/widgets/paginator.dart.dart';
-import 'package:vk/ui/navigation/main_navigation.dart';
+import 'package:vk/ui/navigation/main_navigation_route_names.dart';
 
 class MovieListRowData {
   final int id;
@@ -22,8 +22,13 @@ class MovieListRowData {
   });
 }
 
+abstract class MovieListModelMoviesProvider {
+  Future<PopularMovieResponce> popularFilms(int page, String locale);
+  Future<PopularMovieResponce> searchFilms(int page, String locale, String query);
+}
+
 class MovieListModel extends ChangeNotifier{
-  final _movieService = MovieService();
+  final MovieListModelMoviesProvider movieProvider;
   late final Paginator<Movie> _popularMoviePaginator;
   late final Paginator<Movie> _searchMoviePaginator;
 
@@ -41,13 +46,13 @@ class MovieListModel extends ChangeNotifier{
   List<MovieListRowData> get movies => List.unmodifiable(_movies);
   late DateFormat _dateFormat;
 
-  MovieListModel() {
+  MovieListModel(this.movieProvider) {
     _popularMoviePaginator = Paginator<Movie>((page) async {
-      final result = await _movieService.popularFilms(page, _localeStorage.localeTag);
+      final result = await movieProvider.popularFilms(page, _localeStorage.localeTag);
       return PaginatorLoadResult(data: result.movies, currentPage: result.page, totalPage: result.totalPages);
     });
     _searchMoviePaginator = Paginator<Movie>((page) async {
-      final result = await _movieService.searchFilms(page, _localeStorage.localeTag, _searchQuery ?? '');
+      final result = await movieProvider.searchFilms(page, _localeStorage.localeTag, _searchQuery ?? '');
       return PaginatorLoadResult(data: result.movies, currentPage: result.page, totalPage: result.totalPages);
     });
   }

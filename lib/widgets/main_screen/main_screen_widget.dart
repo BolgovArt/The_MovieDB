@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:vk/domain/factories/screen_factory.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
+import 'package:vk/ui/navigation/main_navigation.dart';
 
 
 
 class MainScreenWidget extends StatefulWidget {
-  const MainScreenWidget({super.key});
+  final ScreenFactory screenFactory;
+
+  const MainScreenWidget({super.key, required this.screenFactory});
 
   @override
   State<MainScreenWidget> createState() => _MainScreenWidgetState();
@@ -18,7 +20,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   // final movieListModel = MovieListModel();
   int _currentTabIndex = 1;
-  final _screenFactory = ScreenFactory();
 
   void onSelectTab(int index) {
     if (_currentTabIndex == index) return; // не будем обновлять state, если вкладка уже выбрана
@@ -74,9 +75,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         child: IndexedStack(
           index: _currentTabIndex,
           children: [
-            _screenFactory.makeNewsList(),
-            _screenFactory.makeMovieList(),
-            _screenFactory.makeTVShowListWidget(),
+            widget.screenFactory.makeNewsList(),
+            widget.screenFactory.makeMovieList(),
+            widget.screenFactory.makeTVShowListWidget(),
           ]
           ),
       ),

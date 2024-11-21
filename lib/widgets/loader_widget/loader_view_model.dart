@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:vk/domain/services/auth_service.dart';
-import 'package:vk/ui/navigation/main_navigation.dart';
+import 'package:vk/ui/navigation/main_navigation_route_names.dart';
+
+abstract class LoaderViewModelAuthStatusProvider {
+  Future<bool> isAuth();
+}
 
 class LoaderViewModel {
   final BuildContext context;
-  final _authService = AuthService();
+  final LoaderViewModelAuthStatusProvider authStatusProvider;
 
-  LoaderViewModel(this.context) {
+  LoaderViewModel({required this.context, required  this.authStatusProvider}) {
     asyncInit();
   }
 
@@ -15,7 +18,7 @@ class LoaderViewModel {
   }
 
   Future<void> checkAuth() async {
-    final isAuth = await _authService.isAuth();
+    final isAuth = await authStatusProvider.isAuth();
     // if (_isAuth) {
     //   Navigator.of(context).pushReplacementNamed(MainNavigationRouteNames.mainScreen);
     // } else {

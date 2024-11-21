@@ -1,16 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:vk/configuration/configutarion.dart';
 import 'package:vk/domain/api_client/network_client.dart';
 
+abstract class AuthApiClient {
+  Future<String> auth({
+    required String username,
+    required String password,
+  });
+}
 
-// произошла инкапсуляция - обющий код поместили в отдельный модуль. Мы несколько методов положили в 1 класс
-
-// три рахных приватных запроса можно инкапсулировать только если они больше нигде по-отдельности не используются, как в нашем приложении.
-// Лучше вынести их в сервис. Сейчас ApiClient за сервис его работу.
-
-class AuthApiClient {
-  final _networkClient = NetworkClient();
+class AuthApiClientDefault implements AuthApiClient {
+  final NetworkClient networkClient;
+  const AuthApiClientDefault({
+    required this.networkClient,
+  });
   Future<String> auth({
     required String username,
     required String password,
@@ -29,7 +34,7 @@ class AuthApiClient {
       return token;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       Configutarion.unsplashUrl,
       '/3/authentication/token/new',
       parser,
@@ -57,7 +62,7 @@ class AuthApiClient {
       "request_token": requestToken,
     });
 
-    final result = _networkClient.post(
+    final result = networkClient.post(
         Configutarion.unsplashUrl,
         '/3/authentication/token/validate_with_login',
         parser,
@@ -81,7 +86,7 @@ class AuthApiClient {
       "request_token": requestToken,
     });
 
-    final result = _networkClient.post(
+    final result = networkClient.post(
         Configutarion.unsplashUrl,
         '/3/authentication/session/new',
         parser,

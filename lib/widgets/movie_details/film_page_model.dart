@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vk/domain/api_client/api_client_exception.dart';
 import 'package:vk/domain/entity/movie_details.dart';
-import 'package:vk/domain/services/auth_service.dart';
-import 'package:vk/domain/services/movie_service.dart';
+import 'package:vk/domain/local_entity/movie_details_local.dart';
 import 'package:vk/library/widgets/inherited/localized_model.dart';
-import 'package:vk/ui/navigation/main_navigation.dart';
+import 'package:vk/ui/navigation/main_navigation_actions.dart';
 
 // агрегация - объединение 3 свойств в одно
 class MoviePagePosterData {
@@ -86,9 +85,25 @@ class MoviePageData {
 
 }
 
+abstract class MoviePageModelLogoutProvider {
+  Future<void> logout();
+}
+
+abstract class MoviePageModelMovieProvider {
+  Future<MovieDetailsLocal> loadDetails({
+      required int movieId, 
+      required String locale
+    });
+  Future<void> updateFavorite({
+      required int movieId,
+      required bool isFavorite,
+    });
+}
+
 class MoviePageModel extends ChangeNotifier { 
-  final _authService = AuthService();
-  final _movieService = MovieService();
+  final MoviePageModelLogoutProvider logoutProvider;
+  final MoviePageModelMovieProvider movieProvider;
+  final MainNavigationActions mainNavigationActions;
 
 
   final int movieId; 
@@ -96,7 +111,11 @@ class MoviePageModel extends ChangeNotifier {
   final _localeStorage = LocalizedModelStorage();
   late DateFormat _dateFormat;
 
-  MoviePageModel(this.movieId);
+  MoviePageModel(this.movieId, {
+    required this.logoutProvider, 
+    required this.movieProvider,
+    required this.mainNavigationActions
+    });
 
 
   Future<void> setupLocale(BuildContext context, Locale locale) async {
@@ -109,7 +128,7 @@ class MoviePageModel extends ChangeNotifier {
 
   Future<void> loadDetails(BuildContext context) async {
     try {
-      final details = await _movieService.loadDetails(movieId: movieId, locale: _localeStorage.localeTag);
+      final details = await movieProvider.loadDetails(movieId: movieId, locale: _localeStorage.localeTag);
       updateData(details.details, details.isFavorite);
     } on ApiClientException catch (e) {
     _handleApiClientException(e, context);
@@ -204,7 +223,7 @@ class MoviePageModel extends ChangeNotifier {
 
     notifyListeners();
     try {
-      await _movieService.updateFavorite(movieId: movieId, isFavorite: data.posterData.isFavorite);
+      await movieProvider.updateFavorite(movieId: movieId, isFavorite: data.posterData.isFavorite);
     } on ApiClientException catch (e) {
       _handleApiClientException(e, context);
     }
@@ -213,8 +232,8 @@ class MoviePageModel extends ChangeNotifier {
   void _handleApiClientException(ApiClientException exeption, BuildContext context){
     switch (exeption.type) {
         case ApiClientExceptionType.sessionExpired:
-          _authService.logout();
-          MainNavigation.resetNavigation(context);
+          logoutProvider.logout();
+          mainNavigationActions.resetNavigation(context);
           break;
         default:
           print(exeption);

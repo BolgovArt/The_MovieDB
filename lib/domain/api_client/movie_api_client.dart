@@ -3,10 +3,26 @@ import 'package:vk/domain/api_client/network_client.dart';
 import 'package:vk/domain/entity/movie_details.dart';
 import 'package:vk/domain/entity/popular_movie_responce.dart';
 
+abstract class MovieApiClient {
+  Future<PopularMovieResponce> popularFilms(int page, String locale, String apiKey, String unsplashUrl);
+  Future<PopularMovieResponce> searchFilms(int page, String locale, String query, String apiKey, String unsplashUrl);
+  Future<MovieDetails> movieDetails(
+  int movieId, 
+  String locale,
+  );
+  Future<bool> isFavorite(
+  int movieId, 
+  String sessionId,
+  );
+}
 
-class MovieApiClient {
-  final _networkClient = NetworkClient();
+class MovieApiClientDefault implements MovieApiClient {
+  final NetworkClient networkClient;
+  const MovieApiClientDefault({
+    required this.networkClient,
+  });
 
+  @override
   Future<PopularMovieResponce> popularFilms(int page, String locale, String apiKey, String unsplashUrl) async {
     parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
@@ -14,7 +30,7 @@ class MovieApiClient {
       return response;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       unsplashUrl,
       '/3/movie/popular',
       parser,
@@ -28,6 +44,7 @@ class MovieApiClient {
   }
 
 
+  @override
   Future<PopularMovieResponce> searchFilms(int page, String locale, String query, String apiKey, String unsplashUrl) async {
     parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
@@ -35,7 +52,7 @@ class MovieApiClient {
       return response;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       unsplashUrl,
       '/3/search/movie',
       parser,
@@ -51,7 +68,8 @@ class MovieApiClient {
   }
 
 
-Future<MovieDetails> movieDetails(
+@override
+  Future<MovieDetails> movieDetails(
   int movieId, 
   String locale,
   ) async {
@@ -61,7 +79,7 @@ Future<MovieDetails> movieDetails(
       return response;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       Configutarion.unsplashUrl,
       '/3/movie/$movieId',
       parser,
@@ -75,7 +93,8 @@ Future<MovieDetails> movieDetails(
   }
 
 
-Future<bool> isFavorite(
+@override
+  Future<bool> isFavorite(
   int movieId, 
   String sessionId,
   ) async {
@@ -85,7 +104,7 @@ Future<bool> isFavorite(
       return result;
     }
 
-    final result = _networkClient.get(
+    final result = networkClient.get(
       Configutarion.unsplashUrl,
       '/3/movie/$movieId/account_states',
       parser,

@@ -3,7 +3,24 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:vk/domain/api_client/api_client_exception.dart';
 
-class NetworkClient {
+abstract class NetworkClient {
+  Future<T> get<T>(
+    String unsplashUrl,
+    String urlPath,
+    T Function(dynamic json) parser,
+    Map<String, dynamic>? parameters,
+  );
+  Future<T> post<T>(
+    String unsplashUrl,
+    String urlPath,
+    T Function(dynamic json) parser,
+    Map<String, dynamic>? urlParameters,
+    Map<String, String> headersParameters,
+    String bodyParameters,
+  );
+}
+
+class NetworkClientDefaults implements NetworkClient{
 
   // // ?
   // final _client = HttpClient();
@@ -11,6 +28,7 @@ class NetworkClient {
 
   
 
+  @override
   Future<T> get<T>(
     String unsplashUrl,
     String urlPath,
@@ -35,6 +53,7 @@ class NetworkClient {
   }
 
 
+  @override
   Future<T> post<T>(
     String unsplashUrl,
     String urlPath,
