@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vk/extentions/context_extention.dart';
 import 'package:vk/ui/design/images.dart';
 import 'package:vk/ui/design/style.dart';
 // import 'package:easy_localization/easy_localization.dart';
@@ -32,7 +33,7 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                   logoTheMVDB,
                   const SizedBox(height: 10),
                   // Text(LocaleKeys.app_title.tr(), style: StyleApp.titleStyle),
-                  Text('LocaleKeys.app_title.tr()', style: StyleApp.titleStyle),
+                  Text(context.loc.authorization, style: StyleApp.titleStyle),
                 ],
               ),
             ),
@@ -61,7 +62,7 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                     children: [
                       _MainActionButtonRegistation(
                           // text: LocaleKeys.registration.tr(),
-                          text: 'LocaleKeys.registration.tr()',
+                          text: context.loc.registration_button,
                           buttonStyle: StyleApp.mainGreenButton
                           ),
                       const SizedBox(
@@ -72,13 +73,13 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             // text: LocaleKeys.registration_title.tr(),
-                            text: 'LocaleKeys.registration_title.tr()',
+                            // text: context.loc.registration_title_one,
                             style: StyleApp.mainTextGrey,
                             children: [
                               // TextSpan(text: LocaleKeys.registration_title.tr(), style: StyleApp.mainTextGrey),
-                              TextSpan(text: 'LocaleKeys.registration_title.tr()', style: StyleApp.mainTextGrey),
+                              TextSpan(text: context.loc.registration_title_one, style: StyleApp.mainTextGrey),
                               // TextSpan(text: LocaleKeys.registration_title_2.tr(), style: StyleApp.mainTextGrey),
-                              TextSpan(text: 'LocaleKeys.registration_title_2.tr()', style: StyleApp.mainTextGrey),
+                              // TextSpan(text: context.loc.registration_title_two, style: StyleApp.mainTextGrey),
                               // ! Кнопка чуть выше основного текста - что делать?
                               WidgetSpan(
                                 child: TextButton(
@@ -89,12 +90,12 @@ class _AuthorizationWidgetState extends State<AuthorizationWidget> {
                                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,  // Минимизируем область клика
                                   ),
                                   // child: Text(LocaleKeys.registration_title_link.tr(), style: StyleApp.titleStyle,
-                                  child: Text('LocaleKeys.registration_title_link.tr()', style: StyleApp.titleStyle,
+                                  child: Text(context.loc.registration_title_two, style: StyleApp.titleStyle,
                                   )
                                 ),
                               ),
                               // TextSpan(text: LocaleKeys.registration_title_3.tr())
-                              TextSpan(text: 'LocaleKeys.registration_title_3.tr()')
+                              TextSpan(text: context.loc.registration_title_three)
                             ],
                           )
                                           ),
@@ -125,7 +126,7 @@ class _FormWidget extends StatelessWidget {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           // Text(LocaleKeys.login.tr(), style: StyleApp.mainTextBlack),
-          Text('LocaleKeys.login.tr()', style: StyleApp.mainTextBlack),
+          Text(context.loc.login, style: StyleApp.mainTextBlack),
           
         ]),
         const _ErrorMessageWidget(),
@@ -145,7 +146,7 @@ class _FormWidget extends StatelessWidget {
         // _ShowDeleteButtonLogin(logInTextController),
         const SizedBox(height: 10),
         // Text(LocaleKeys.password.tr(), style: StyleApp.mainTextBlack),
-        Text('LocaleKeys.password.tr()', style: StyleApp.mainTextBlack),
+        Text(context.loc.password, style: StyleApp.mainTextBlack),
 
 
         TextField(
@@ -158,7 +159,8 @@ class _FormWidget extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               isCollapsed: true,
               ),
-          obscureText: true
+          obscureText: true,
+          keyboardType: TextInputType.visiblePassword,
           ),
 
 
@@ -359,7 +361,7 @@ class _BottomLine extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Text(LocaleKeys.theme.tr(), style: StyleApp.mainSystemTextBlue),
-                      Text('LocaleKeys.theme.tr()', style: StyleApp.mainSystemTextBlue),
+                      Text(context.loc.change_theme, style: StyleApp.mainSystemTextBlue),
                       const Icon(Icons.format_paint_outlined)
                     ],
                   ))),

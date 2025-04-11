@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vk/domain/api_client/image_downloader.dart';
+import 'package:vk/extentions/context_extention.dart';
 import 'package:vk/ui/design/style.dart';
 import 'package:vk/widgets/movie_list/movie_list_model.dart';
 
@@ -59,7 +60,7 @@ class _SearchWidget extends StatelessWidget {
             prefixIcon: Icon(Icons.search, size: 24,), // ? Как изменить размер иконки?????????? Пробовал в контейнер оборачивать
             prefixIconColor: Colors.black38,
             // prefixIconConstraints: BoxConstraints(maxWidth: 20),
-            hintText: 'Поиск',
+            hintText: context.loc.search_panel,
             hintStyle: StyleApp.mainTextGrey,
             // isCollapsed: true,
             contentPadding: EdgeInsets.zero,

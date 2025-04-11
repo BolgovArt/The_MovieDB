@@ -1,0 +1,23 @@
+{
+  "authorization": "Авторизация",
+  "login": "Ваш логин:",
+  "password": "Ваш пароль:",
+  "login_button": "Войти",
+  "registration_button": "Регистрация",
+  "registration_title_one": "Если Вы зарегистрировались, но не получили письмо для подтверждения, ",
+  "registration_title_two": "нажмите здесь ",
+  "registration_title_three": ", чтобы отправить письмо повторно.",
+  "change_theme": "Сменить тему",
+  "attention_empty_fields": "Заполните логин и пароль",
+  "auth_model_network_error": "Сервер недоступен. Проверьте подключение к интернету.",
+  "auth_model_network_auth": "Неправильный логин или пароль",
+  "auth_model_network_other": "Произошла ошибка, попробуйте ещё раз.",
+  "auth_model_network_sessionExpired": "Ошибка сессии",
+  "movies_page_title": "Фильмы",
+  "log_out_button": "Выход из \nаккаунта",
+  "search_panel": "Поиск фильмов",
+  "buttom_page_icon_one": "Новости",
+  "buttom_page_icon_two": "Фильмы",
+  "buttom_page_icon_three": "Сериалы",
+  "casts_list": "Список актёров"
+  }

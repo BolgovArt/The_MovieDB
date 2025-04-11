@@ -16,6 +16,7 @@ import 'package:vk/widgets/authorization/authorization_model.dart';
 import 'package:vk/widgets/authorization/authorization_widget.dart';
 import 'package:vk/widgets/loader_widget/loader_view_model.dart';
 import 'package:vk/widgets/loader_widget/loader_widget.dart';
+import 'package:vk/widgets/main_screen/main_screen_model.dart';
 import 'package:vk/widgets/main_screen/main_screen_widget.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 import 'package:vk/widgets/movie_details/film_page_widget.dart';
@@ -72,6 +73,8 @@ class _DiContainer {
     mainNavigationActions: _mainNavigationAction
     );
   MovieListModel _makeMovieListModel() => MovieListModel(_makeMovieService());
+
+  MainScreenModel _makeMainScreenModel() => MainScreenModel(_mainNavigationAction, authLogOut: ()=> _makeAuthService().logout(),);
 }
 
 class ScreenFactoryDefault implements ScreenFactory{
@@ -96,7 +99,10 @@ class ScreenFactoryDefault implements ScreenFactory{
   
   @override
   Widget makeMainScreenWidget() {
-    return MainScreenWidget(screenFactory: this);
+    return ChangeNotifierProvider(create: 
+      (_) => _diContainer._makeMainScreenModel(),
+      child: MainScreenWidget(screenFactory: this)
+    );
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:vk/domain/api_client/api_client_exception.dart';
+import 'package:vk/extentions/context_extention.dart';
 import 'package:vk/ui/navigation/main_navigation_actions.dart';
 
 abstract class AuthViewModelLoginProvider {
@@ -23,19 +24,19 @@ class AuthViewModel extends ChangeNotifier {
   bool _isValid(String login, String password) => 
     login.isNotEmpty || password.isNotEmpty;
 
-  Future<String?> _login(String login, String password) async {
+  Future<String?> _login(String login, String password, BuildContext context) async {
     try {
-      loginProvider.login(login, password);
+      await loginProvider.login(login, password);
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.network:
-          return 'Сервер недоступен. Проверьте подключение к интернету.';
+          return context.loc.auth_model_network_error;
         case ApiClientExceptionType.auth:
-          return 'Неверный логин/пароль';
+          return context.loc.auth_model_network_auth;
         case ApiClientExceptionType.other:
-          return 'Произошла ошибка, попробуйте ещё раз.';
-        case ApiClientExceptionType.sessionExpired:
-          return 'Ошибка сессии';
+          return context.loc.auth_model_network_other;
+        case ApiClientExceptionType.sessionExpired: 
+          return context.loc.auth_model_network_sessionExpired;
       }
     } catch (e) {
       return 'sessionId или accountId = null';
@@ -56,7 +57,7 @@ class AuthViewModel extends ChangeNotifier {
     final password = passwordTextController.text;
 
     if (!_isValid(login, password)) {
-      _errorMessage = 'Заполните логин и пароль';
+      _errorMessage = context.loc.attention_empty_fields;
       notifyListeners();
       return;
     }
@@ -66,12 +67,13 @@ class AuthViewModel extends ChangeNotifier {
     // _isAuthProgress = true;
     // notifyListeners();
 
-    _errorMessage = await _login(login, password);
+    _errorMessage = await _login(login, password, context);
       
     // _isAuthProgress = false;
 
     if (_errorMessage != null) {
       _updateState(_errorMessage, false);
+      return;
     }
     mainNavigationActions.resetNavigation(context);
   }

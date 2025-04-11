@@ -1,0 +1,23 @@
+ {
+    "authorization": "Authorization",
+    "login": "Your login:",
+    "password": "Your password:",
+    "login_button": "Login",
+    "registration_button": "Registration",
+    "registration_title_one": "If you have registered but have not received a confirmation email, ",
+    "registration_title_two": "Click here ",
+    "registration_title_three": "to resend the letter.",
+    "change_theme": "Change theme",
+    "attention_empty_fields": "Fill in your login and password",
+    "auth_model_network_error": "The server is unavailable. Check your internet connection.",
+    "auth_model_network_auth": "Incorrect login or password",
+    "auth_model_network_other": "An error occurred, please try again.",
+    "auth_model_network_sessionExpired": "Session error",
+    "movies_page_title": "Movies",
+    "log_out_button": "Logout from \naccount",
+    "search_panel": "Search movie",
+    "buttom_page_icon_one": "News",
+    "buttom_page_icon_two": "Movies",
+    "buttom_page_icon_three": "Series",
+    "casts_list": "List of actors"
+  }

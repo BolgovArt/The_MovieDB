@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vk/domain/api_client/image_downloader.dart';
+import 'package:vk/extentions/context_extention.dart';
 import 'package:vk/widgets/movie_details/film_page_model.dart';
 
 
@@ -15,11 +16,11 @@ class FilmPageMainScreenCastWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              'Список актёров',
-              style: TextStyle(
+              context.loc.casts_list,
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
               ),

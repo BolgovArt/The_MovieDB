@@ -1,0 +1,2 @@
+C:/Flutter_projects/The_MovieDB/android/app/.cxx/Debug/1x2w4o3n/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Flutter_projects/The_MovieDB/android/app/.cxx/Debug/1x2w4o3n/armeabi-v7a/CMakeFiles/rebuild_cache.dir

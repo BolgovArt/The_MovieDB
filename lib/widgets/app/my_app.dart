@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vk/l10n/generated/app_localizations.dart';
 import 'package:vk/ui/design/colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vk/ui/navigation/main_navigation_route_names.dart';
@@ -19,13 +20,14 @@ class MyApp extends StatelessWidget {
       
 
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('ru', 'RU'),
-        Locale('en', ''),
+        Locale('en', 'US'),
       ],
 
       title: 'Flutter Demo',

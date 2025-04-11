@@ -4,9 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 final Widget vkLogo = SvgPicture.asset('assets/images/VK_Compact_Logo_(2021-present).svg', semanticsLabel: 'VK');
 final Widget vkTextAndLogo = SvgPicture.asset('assets/images/VK_Text_Logo.svg', semanticsLabel: 'VK', width: 24, height: 24,);
 final Widget questionMark = SvgPicture.asset('assets/images/questionmark.svg', height: 15, color: const Color.fromRGBO(0, 0, 0, 0.38),);
-Widget bottomHomeIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_home.svg', color: colorParam);}
-Widget bottomChatIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_chat.svg', color: colorParam);}
-Widget bottomMusicIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_music.svg', color: colorParam);}
+// Widget bottomHomeIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_home.svg', color: colorParam);}
+Widget bottomHomeIcon(Color colorParam) { return SvgPicture.asset('assets/images/icon_news.svg', color: colorParam, width: 35,);}
+// Widget bottomChatIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_chat.svg', color: colorParam);}
+Widget bottomChatIcon(Color colorParam) { return SvgPicture.asset('assets/images/movies_icon.svg', color: colorParam, width: 35,);}
+// Widget bottomMusicIcon(Color colorParam) { return SvgPicture.asset('assets/images/bottom_music.svg', color: colorParam);}
+Widget bottomMusicIcon(Color colorParam) { return SvgPicture.asset('assets/images/series_icon.svg', color: colorParam, width: 35,);}
 Widget addElementIcon(Color colorParam) { return SvgPicture.asset('assets/images/add_item_icon.svg', color: colorParam);}
 Widget microIcon(Color colorParam) { return SvgPicture.asset('assets/images/micro_icon.svg', color: colorParam);}
 Widget smileIcon(Color colorParam) { return SvgPicture.asset('assets/images/smile_for_text.svg', height: 24, color: colorParam);}
